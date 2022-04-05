@@ -9,7 +9,7 @@ const token = window.localStorage.getItem('token');
 // }
 
 // const ENDPOINT = 'http://localhost:5000/';
-const ENDPOINT = 'https://content-manager-back.herokuapp.com:5000/';
+const ENDPOINT = 'https://fullstack-content-manager.herokuapp.com/';
 
 
 const url_projects = ENDPOINT+'projects'

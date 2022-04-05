@@ -24,7 +24,7 @@ app.get('/', (req, res) => {
 
 app.use(cors({
     // origin: 'http://localhost:3000'
-    origin: 'https://content-manager-back.herokuapp.com/'
+    origin: 'https://624ca31723985008bff1f990--famous-malasada-c0ea7e.netlify.app/'
 }));
 
 

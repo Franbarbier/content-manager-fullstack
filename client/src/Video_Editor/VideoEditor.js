@@ -156,7 +156,7 @@ class VideoEditor extends React.Component {
                 data.append( 'file', file )
                 
                 // axios.post('http://localhost:5000/upload-video', data, { 
-                axios.post('https://content-manager-back.herokuapp.com:5000/upload-video', data, { 
+                axios.post('https://fullstack-content-manager.herokuapp.com/upload-video', data, { 
                     
                     onUploadProgress: (progressEvent) => {
                         const progress = ( (progressEvent.loaded / progressEvent.total) * 100 ).toFixed();
@@ -199,7 +199,7 @@ class VideoEditor extends React.Component {
                             console.log(retDataThumb.get('file'));
                             
                             // axios.post('http://localhost:5000/upload-thumb', retDataThumb)
-                            axios.post('https://content-manager-back.herokuapp.com:5000/upload-thumb', retDataThumb)
+                            axios.post('https://fullstack-content-manager.herokuapp.com/upload-thumb', retDataThumb)
                             .then((e)=>{
                                 this.props.saveLoader("success",false, null)
                             })
@@ -232,10 +232,6 @@ render = () => {
                 {this.state.isUpload ? this.render_uploader() : this.render_editor()}
                 <div className={"theme_toggler"} onClick={this.toggleThemes}>{this.state.isDarkMode? (<i className="toggle" aria-hidden="true"><FontAwesomeIcon icon={faLightbulb} /></i>) : <i className="toggle"><FontAwesomeIcon icon={faMoon} /></i>}</div>
             </div>
-            {/* <form action="http://localhost:5000/upload" method="post" encType="multipart/form-data" >
-                <input type="file" name="avatar" />
-                <button>Submit</button>
-            </form> */}
             </>
         )
     }
