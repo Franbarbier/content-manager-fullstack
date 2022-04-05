@@ -1,0 +1,54 @@
+#NuggetProgress-view{
+    display: flex;
+    justify-content: space-between;
+    margin: 19px 0 15px;
+}
+#NuggetProgress-view>div{
+    border-radius: 5px;
+    border: 1px solid var(--gris2);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.9em;
+    cursor: pointer;
+    padding: 4px 10px;
+    color:#676767
+}
+
+.circulo-check{
+    width: 0.55em;
+    height: 0.55em;
+    background: var(--gris3);
+    border: 1px solid var(--gris2);
+    border-radius: 50%;
+    margin-right: 5px;
+    padding: 0.25em;
+
+}
+#NuggetProgress-view>div:hover .circulo-check>div{
+    opacity: 1;
+}
+
+.circulo-check>div{
+    width: 100%;
+    height: 100%;
+    background: var(--gris1);
+    border-radius: 50%;
+    opacity: 0;
+    transition: .2s;
+}
+.completed{
+    background: #7f45c482;
+    border: 2px solid #7f45c4;
+}
+.completed .circulo-check{
+    background: #7f45c49e;
+    border: 2px solid #7f45c4;
+}
+.completed .circulo-check div{
+    opacity: 1;
+    background-color: var(--violeta);
+}
+.completed span{
+    color: #f0f0f0
+}

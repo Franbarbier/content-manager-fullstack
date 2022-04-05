@@ -1,0 +1,43 @@
+#modal-back{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(7px);
+    z-index: 5;
+}
+#modal-cont-nuggetInfo{
+    position: absolute;
+    padding: 3%;
+    background-color: white;
+    border-radius: 15px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    max-height: 70vh;
+    width: 40%;
+    overflow: auto;
+}
+#modal-cont-nuggetInfo h3{
+    margin-bottom: 5%;
+}
+#modal-cont-nuggetInfo li{
+    padding: 5%;
+    margin: 3.5% 0;
+}
+#modal-cont-nuggetInfo li:nth-child(odd){
+    background-color: #f0f0f0;
+}
+#modal-cont-nuggetInfo h4{
+    margin-bottom: 2%;
+}
+#modal-cont-nuggetInfo p{
+    margin-top: 2%;
+}
+#close-modal-infoNugget{
+    width: 24px;
+    float: right;
+    cursor: pointer;
+}

@@ -1,0 +1,178 @@
+
+#nuggets-cont{
+    padding-top: 15%;
+}
+#nuggets-cont li{
+    padding: 4% 7%;
+    border: 1px solid var(--gris2);
+    border-radius: 12px;
+    margin-bottom: 5%;
+    cursor: pointer;
+    position: relative;
+    z-index: 2;
+    box-shadow: 0 0 8px 3px rgb(237, 237, 237);
+    color: #1e1e1e;
+}
+#nuggets-cont li:hover{
+    box-shadow: 0px 0px 6px 3px var(--gris3);
+}
+#nugget-titulo{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+#nugget-titulo h4{
+    display: inline-block;
+    font-size: 1.1em;
+    /* width: 35%; */
+}
+#nugget-titulo input{
+    border: none;
+    border-bottom: 1px solid var(--gris2);
+    outline: none;
+    font-size: 1.1em;
+    color: var(--falso-negro);
+    font-weight: 300;
+    margin-left: 10px;
+    padding: 1% 0.5%;
+    width: 55%;
+    background-color: transparent;
+}
+.upload-nugget-vid{
+    margin-top: 5%;
+    font-size: 0.8em;
+}
+.upload-nugget-vid>label{
+    margin-bottom: 5px ;
+    display: block;
+}
+.delete-nugget{
+    position: absolute;
+    width: 24px;
+    left: 102%;
+    top: 50%;
+    transform: translate(0%, -50%);
+    cursor: pointer;
+    transition: .2s;
+    opacity: 0.7;
+    z-index: -1;
+}
+.delete-nugget:hover{
+    opacity: 0.9;
+}
+.nuggetSelected{
+    border: 2px solid var(--violeta)!important;
+    background-color: #7e45c435;
+}
+
+.copy, .look{
+    width: 32px;
+    height: 32px;
+    opacity: 0.5;
+    background-color: #ddd;
+    border-radius: 50%;
+    position: relative;
+    margin-left: 5%;
+}
+.copy img, .look img{
+    width: 60%;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    float: right;
+}
+.copy:hover, .look:hover{
+    opacity: .9;
+}
+.copy p{
+    position: absolute;
+    /* width: 140px; */
+    font-size: 0.7em;
+    left: 115%;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #53a853;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    opacity: 0;
+    transition: .5s;
+}
+.labelVidNugget{
+    padding: 8px 12px;
+    border: 1px solid rgb(145, 145, 145);
+    background-color: rgba(255,255,255,0.4);
+    border-radius: 5px;
+    width: calc(100% - 24px);
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    transition: .3s;
+}
+.labelVidNugget>span{
+    cursor: pointer;
+}
+.labelVidNugget input{
+    position: absolute;
+    opacity: 0;
+    z-index: 0;
+    cursor: pointer;
+}
+.labelVidNugget span, .labelVidNugget button{
+    z-index: 5;
+    position: relative;
+}
+#progress-bar{
+    position: absolute;
+    height: 4px;
+    bottom: 0;
+    left: 0;
+    width: 0%;
+    transition: .08s;
+    background: var(--violeta);
+    transition-delay: .1s;
+}
+.labelVidNugget{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.labelVidNugget>div{
+    display:flex;
+    align-items: center;
+}
+.upload-video-nugget, .edit-video-nugget{
+    padding: 6px 8px;
+    border-radius: 5px;
+    border: #a579dc 1px solid;
+    cursor: pointer;
+    color: var(--violeta);
+}
+.edit-video-nugget{
+    z-index: -1!important;
+}
+.btns-cont button{
+    border-radius: 50px;
+    padding: 3px;
+    margin-left: 10px;
+    position: relative;
+    width: 24px;
+    height: 24px;
+    filter: invert(0.4);
+    border: 1px rgb(39, 39, 39) solid;
+    background: none;
+    cursor: pointer;
+    transition: .2s;
+}
+.btns-cont button img{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60%;
+    cursor: pointer;
+}
+.btns-cont button:hover{
+    filter: invert(0);
+}

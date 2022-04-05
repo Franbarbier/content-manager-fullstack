@@ -1,0 +1,22 @@
+:root{
+    --gris1: #979797;
+    --gris2: #BBBECA;
+    --gris3: #f0f0f0;
+    --falso-negro: #272727;
+    --blanco: #FFFFFF;
+    --violeta: #7f45c4;
+   }
+  
+  *{ margin: 0; padding: 0; }
+  a{ text-decoration: none; color: inherit;}
+  li{ list-style: none; }
+  body{ overflow-x: hidden; color: #272727;font-family: ubuntu, sans-serif; }
+  h1, h2{  }
+  h5{ }
+  button, input, textarea{ font-family: ubuntu, sans-serif }
+  
+  ::-webkit-scrollbar{width:6px;height:4px;position:absolute}
+  ::-webkit-scrollbar-track{background:hsla(0,0%,78%,.8);transition:background .2s}
+  ::-webkit-scrollbar-track:hover{background:hsla(0,0%,78%,.5)}
+  ::-webkit-scrollbar-thumb{background:hsla(0,0%,47%,.8);transition:background .2s;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+  ::-webkit-scrollbar-thumb:hover{background:hsla(0,0%,47%,.9)}

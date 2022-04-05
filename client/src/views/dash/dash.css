@@ -1,0 +1,57 @@
+
+
+#Dash-view{
+    display: flex;
+    justify-content: center;
+    background-color: #fafafa;
+    min-height: 100vh;
+}
+#Dash-view>div{
+    padding-top: 5%;
+}
+
+#col-1, #col-3{
+    width: 15%;
+}
+#center-col{
+    width: 70%;
+}
+#top-menu{
+    display: flex;
+    justify-content: center;
+}
+#top-menu input{
+    padding: 10px 18px;
+    border: 1px solid #ddd;
+    border-radius: 50px;
+    margin-right: 10px;
+    width: 50%;
+    outline: none;
+    transition: .2s;
+}
+#top-menu input:focus{
+    border-color: var(--violeta);
+    box-shadow: 0px 0px 10px 4px #eadaff;
+}
+#top-menu button{
+    padding: 10px 18px;
+    border-radius: 50px;
+    margin-left: 10px;
+    cursor: pointer;
+    background: var(--violeta);
+    color: var(--blanco);
+    border: 1px solid var(--violeta);
+}
+#top-menu button:hover{
+    background: transparent;
+    color: var(--violeta);
+    transition: .2s;
+
+}
+
+#project-cards-cont{
+    display: flex;
+    justify-content: space-between;
+    padding: 8% 0 0;
+    flex-wrap: wrap;
+}

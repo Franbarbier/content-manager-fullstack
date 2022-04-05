@@ -1,0 +1,56 @@
+#NewProject-view{
+    display: flex;
+    width: 90%;
+    justify-content: space-between;
+    margin: auto;
+    padding-top: 3%;
+}
+#col-vid{
+    width: 60%;
+}
+#col-nuggets{
+    border-left: 1px solid #f7f7f7;
+    width: 36%;
+    padding-left: 2%;
+}
+#AddNugget{
+    padding: 4% 7%;
+    border: 1px dashed var(--gris2);
+    border-radius: 12px;
+    background: transparent;
+    width: 100%;
+    cursor: pointer;
+    font-size: 14px;
+}
+#AddNugget:hover{
+    background: var(--gris3)
+}
+.nombre-proyecto{
+    font-size: 2em;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid #ddd;
+}
+#project-info{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+#project-info button{
+    background: var(--violeta);
+    border: 1px solid var(--violeta);
+    color: white;
+    padding: 8px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    box-shadow: 0px 2px 9px 2px #cfcfcf;
+    transition: .35s;
+
+}
+#project-info button:hover{
+    /* background-color: transparent; */
+    /* color: var(--violeta); */
+    transform: scale(0.97);
+    box-shadow: 0px 2px 3px 2px #cfcfcf;
+
+}

@@ -1,0 +1,101 @@
+#Testing1-view{
+    margin: auto;
+    display: block;
+    padding-bottom: 3%
+}
+#Testing1-view li{
+    padding: 3% 0;
+    border-bottom: 1px solid #ddd;
+}
+#Testing1-view li:last-child{
+    /* border-bottom: none; */
+    
+}
+#Testing1-view>article>h2{
+    margin-bottom:  3.5%;
+}
+.corte-titulo{
+    border: none;
+    border-bottom: 1px solid var(--gris2);
+    outline: none;
+    font-size: 1.15em;
+    color: var(--falso-negro);
+    font-weight: 300;
+    width: 60%;
+    padding: 1% 0.5%;
+
+}
+.segundos-de-corte{
+    border: none;
+    outline: none;
+    background: var(--gris3);
+    border-radius: 3px;
+    /* text-align: center; */
+    padding: 4px 2px 4px 8px;
+    width: 50px;
+}
+#Testing1-view li i{
+}
+.input-cont{
+    width: fit-content;
+    display: inline;
+}
+.label-cont{
+    display: inline;
+    position: relative;
+}
+.label-cont:first-child:before{
+    content: 'Mins';
+    font-size: 0.6em;
+    position: absolute;
+    bottom: 110%;
+    font-style: italic;
+}
+.label-cont:nth-child(3):before{
+    content: 'Segs';
+    font-size: 0.6em;
+    position: absolute;
+    bottom: 110%;
+    font-style: italic;
+}
+
+.cortes input[type=name]{
+    margin-bottom: 15px;
+}
+
+.cortes textarea{
+    margin-top: 15px;
+    background: var(--gris3);
+    border: 1px solid #ddd;
+    padding: 1%;
+    resize: none;
+    width: 60%;
+}
+#Testing1-view hr{
+    color: #ddd;
+    width: 60%;
+}
+.corte-progress{
+    height: 8px;
+    width: 60%;
+    background: var(--gris2);
+    margin-bottom: 25px;
+    padding: 0 1%;
+    position: relative;
+}
+.corte-progress>div{
+    position: absolute;
+    height: 100%;
+    background-color: var(--violeta);
+}
+#copiar-txt{
+    background-color: transparent;
+    padding: 8px 16px ;
+    border-radius: 3px;
+    border: 1px solid #ddd;
+    cursor: pointer;
+    margin-top: 5%;
+}
+#copiar-txt:hover{
+    background-color: #f0f0f0;
+}
