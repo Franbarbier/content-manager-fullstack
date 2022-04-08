@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import {useDispatch, useSelector} from 'react-redux';
+import { deleteProject } from '../../actions/projects';
+import { Link } from 'react-router-dom';
 
 // import thumg_img from '../../../../server/public/'
 
@@ -11,6 +14,8 @@ const ProjectCard = ({project}) => {
     const [porAsignado, setPorAsignado] = useState(0)
     const [porEditado, setPorEditado] = useState(0)
     const [porPublicado, setPorPublicado] = useState(0)
+
+    const dispatch = useDispatch()
 
 useEffect(()=>{
 
@@ -58,21 +63,29 @@ useEffect(()=>{
 
 },[])
 
+function deleteThisProject() {
+    if (window.confirm("Eliminar este proyecto de forma permanente?")) {
+            console.log(project._id)
+            // setLoading(true)
+            dispatch(deleteProject(project._id, dispatch )).then(
+              (e)=> 
+                alert('Se eliminó correctamente')        
+              ).catch( (e) =>{
+                console.log('error:::', e.error)        
+            } )
+    }
+}
 
 
   function render(){
       return <>
+            <Link to={`/project/${project._id}`}>
                 <div className='project-card'>
                     <div>
                         <div className="thumb">
                             <img src="https://i.ytimg.com/vi/QAuJU5FUyC0/maxresdefault.jpg" />
                         </div>
                         <div>
-                            <div className='tags-cont'>
-                            {project.tags.map((tag, index)=>(
-                                <span>{tag}</span>
-                            ))}
-                            </div>
                             <h3>{project.name}</h3>
                         </div>
                         <div className="porcentajes">
@@ -87,8 +100,19 @@ useEffect(()=>{
                                 <p>{porPublicado}%</p><span>Publicado</span>
                             </div>
                         </div>
+                        <div className='tags-cont'>
+                            {project.tags.map((tag, index)=>(
+                                <span>{tag}</span>
+                            ))}
+                        </div>
+                        <div onClick={ ()=>{ deleteThisProject() }  } className="delete-cont">
+                            <div>
+                                <img src="./assets/delete-trash.png" />
+                            </div>
+                        </div>
                     </div>
                 </div>
+            </Link>
              </>
              
 

@@ -42,14 +42,17 @@ const NewProject = () => {
   }
 
   function recordTimings(timing) {
-
     var oldState = nuggets
     let activeNugg = nuggets.filter(nugget => nugget.id == activeNugget);
     let indexx = oldState.indexOf(activeNugg[0])
 
     oldState[indexx].timings = timing
     setNuggets(oldState)
+    // console.log(oldState)
   }
+  useEffect( ()=>{
+    console.log(nuggets)
+  }, [projectData] )
 
   function setCorteInfo(index, value, type ){
 
@@ -129,8 +132,8 @@ const NewProject = () => {
         console.log( data.get("new_name") )
         data.append( 'file', file )
 
-        // axios.post('http://localhost:5000/upload-video-nugget', data, { 
-        axios.post('https://fullstack-content-manager.herokuapp.com/upload-video-nugget', data, { 
+        axios.post('http://localhost:5000/upload-video-nugget', data, { 
+        // axios.post('https://fullstack-content-manager.herokuapp.com/upload-video-nugget', data, { 
                     
             onUploadProgress: (progressEvent) => {
                 const progressNugg = ( (progressEvent.loaded / progressEvent.total) * 100 ).toFixed();
@@ -167,7 +170,7 @@ const NewProject = () => {
     dispatch(createProject(projectData)).then(
       (e)=> 
       saved_project(e._id),
-      alert('Se guardó correctamente el proyecto')
+        alert('Se guardó correctamente el proyecto')
         
 
       ).catch( (e) =>{

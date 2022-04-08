@@ -7,7 +7,7 @@ import './NuggetTab.css';
 
 const NuggetTab = ({ nuggets, nugget, index, activeNugget, setActiveNugget, setNuggets, setRenderInfoNugget }) => {
 
-const [estadoNugget, setEstadoNugget] = useState(0)
+const [estadoNugget, setEstadoNugget] = useState(nugget.estado)
 const [videoFileNugg, setVideoFileNugg,] = useState()
 const [videoNugget, setVideoNugget] = useState({
        estado : "No elegido"

@@ -10,7 +10,7 @@
     cursor: pointer;
     position: relative;
     z-index: 2;
-    box-shadow: 0 0 8px 3px rgb(237, 237, 237);
+    box-shadow: 0 0 18px 7px rgb(238 238 238);
     color: #1e1e1e;
 }
 #nuggets-cont li:hover{

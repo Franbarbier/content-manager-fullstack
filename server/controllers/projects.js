@@ -25,3 +25,9 @@ export const createProject = async(req, res) =>{
     }
 
 }
+
+export const deleteProject = async (req, res)=>{
+    const id = req.params.id;
+    await Project.findByIdAndRemove(id)
+    res.json({message: 'Project deleted succesfully', id: id})
+}

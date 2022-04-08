@@ -5,6 +5,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faVolumeMute, faVolumeUp, faPause, faPlay, faGripLinesVertical, faSync, faStepBackward, faStepForward, faCamera, faDownload, faEraser } from '@fortawesome/free-solid-svg-icons'
 import Testing1 from './testing1';
 import './testing1.css';
+import InputNumber from '../components/InputNumber/InputNumber';
+
+
 
 
 class Editor extends React.Component {
@@ -20,7 +23,8 @@ class Editor extends React.Component {
             current_warning: null,
             imageUrl: "",
             tuqui : "",
-            totalDuration: 0
+            totalDuration: 0,
+            formatedTimings: []
 
         }
         this.playVideo = React.createRef();
@@ -327,18 +331,6 @@ class Editor extends React.Component {
 
 
     // Aca viene mi papota
-
-    handleCallback = (childData) => {
-
-        let newTimings = this.state.timings
-        newTimings[childData.index][childData.point] = childData.value * 1
-
-        this.setState({
-            timings: newTimings
-        })
-       
-    }
-
     formatDecimals = (num) => {
           num = num.toFixed(2)
           return num;
@@ -369,7 +361,58 @@ class Editor extends React.Component {
             })        
 
         this.props.recordTimings(newTimings)
+        // console.log(newTimings, newTime, index, point, type )
+    }
 
+    newManualChangeSubState = (event, index, point, type) => {
+
+        var mins = event.target.closest('.input-cont').querySelector('#'+point+'M'+index).value
+        var segs = event.target.closest('.input-cont').querySelector('#'+point+'S'+index).value
+
+        var newTime = (mins*60)*1 + segs*1
+                
+        var childData = {
+            "value" : newTime,
+            "point" : point,
+            "index" : index
+        }
+        
+        console.log(childData)
+        
+        let newTimings = this.state.timings
+        newTimings[childData.index][childData.point] = childData.value * 1
+
+        // this.setState({
+        //     timings: newTimings
+        // })
+
+        this.props.recordTimings(newTimings)
+    }
+    refreshInputVal = (value, index, point, type) => {
+        
+        var mins = document.querySelectorAll('.cortes')[index].querySelector('#'+point+'minutos'+index).value
+        var segs = document.querySelectorAll('.cortes')[index].querySelector('#'+point+'segundos'+index).value
+
+        var newTime = (mins*60)*1 + segs*1
+                
+        var childData = {
+            "value" : newTime,
+            "point" : point,
+            "index" : index
+        }
+        
+        console.log(childData)
+        
+        let newTimings = this.state.timings
+        newTimings[childData.index][childData.point] = childData.value * 1
+
+        console.log(newTimings)
+
+        this.setState({
+            timings: newTimings
+        })
+
+        // this.props.recordTimings(newTimings)
     }
 
     corteInfo = (e, index, type) => {
@@ -378,29 +421,33 @@ class Editor extends React.Component {
   
     getValueTime = (index, point, type) => {
         
-        var formateo = this.state.timings[index][point]
-        
-        if (formateo > 59) {
-            var decimalizaso = (formateo / 60)
-            var minutos = decimalizaso.toString().split('.')[0]
+        if(this.state.timings[index]){
+            var formateo = this.state.timings[index][point]
             
-            var segundos = decimalizaso.toString().split('.')[1]
-            segundos = 60* ( (segundos.substring(0, 4) * 1) / 100 )  /100
-            segundos = segundos.toFixed(2)
+            if (formateo > 59) {
+                var decimalizaso = (formateo / 60)
+                var minutos = decimalizaso.toString().split('.')[0]
+                
+                var segundos = decimalizaso.toString().split('.')[1]
+                segundos = 60* ( (segundos.substring(0, 4) * 1) / 100 )  /100
+                segundos = segundos.toFixed(2)
 
+            }else{
+                var minutos = '00'
+                var segundos = formateo.toFixed(2)
+            }
+            
+            var final_num
+            if (type == 'minutos') {
+                    final_num = minutos
+            }
+            if (type == 'segundos') {
+                final_num = segundos* 1
+            }
+            return final_num
         }else{
-            var minutos = '00'
-            var segundos = formateo.toFixed(2)
+            return 0
         }
-        
-        var final_num
-        if (type == 'minutos') {
-                final_num = minutos
-        }
-        if (type == 'segundos') {
-            final_num = segundos* 1
-        }
-        return final_num 
     }
     
 
@@ -419,7 +466,6 @@ class Editor extends React.Component {
             }); 
 
             if (this.props.activeNugget[0].timings.length  == 0) {
-        
                 
                 var time = this.props.activeNugget[0].timings
                 time.push({'start': 0, 'end': this.state.totalDuration})
@@ -436,9 +482,18 @@ class Editor extends React.Component {
             return false
         }
         
-        
-
     }
+
+    InputComponent = (index, point, type) =>{
+        return(
+            <>
+            {/* onChange={ e => this.newManualChange(e, index, 'end', 'segundos') } */}
+                <input type="number"  id={point+type+index} value={this.getValueTime( index, point, type)} onChange={ e => this.refreshInputVal(e, index, point, type) } className="segundos-de-corte" />
+            </>
+        )
+    }
+
+    
 
     render = () => {
        
@@ -489,7 +544,6 @@ class Editor extends React.Component {
                 : ""}
             </div>
 
-            {/* <Testing1  parentCallback = {this.handleCallback} duration={this.state.totalDuration} cortes={this.state.timings} /> */}
             <>
             <div id="Testing1-view">
                 <article>
@@ -500,25 +554,25 @@ class Editor extends React.Component {
 
                               <input type="name" className="corte-titulo" onChange={ e => this.corteInfo(e, index, "titulo") } defaultValue={`Corte ${index+1}`} />
 
-                              <div className='corte-progress' style={{'background':`linear-gradient(90deg, var(--gris2) ${this.pasarAPor(corte.start)}%, var(--violeta) ${this.pasarAPor(corte.start)}%, var(--violeta) ${this.pasarAPor(corte.end)}%, var(--gris2) ${this.pasarAPor(corte.end)}%)`}}>
+                              <div  className='corte-progress' style={{'background':`linear-gradient(90deg, var(--gris2) ${this.pasarAPor(corte.start)}%, var(--violeta) ${this.pasarAPor(corte.start)}%, var(--violeta) ${this.pasarAPor(corte.end)}%, var(--gris2) ${this.pasarAPor(corte.end)}%)`}}>
                               </div>
 
 
-                              <div key={Math.floor(Math.random() * (0-500 + 1)) + 0} className="input-cont">
-                                    {/* <input type="number" onChange={ e => this.manualChange(e, index, 'start') } id={"start"+index} value={corte.start} className="segundos-de-corte" /> */}
+                              <div className="input-cont">
+                              <div className="label-cont"></div>
+                                    {this.InputComponent(index, 'start', 'minutos')}
+                                    :
                                     <div className="label-cont"></div>
-                                    <input type="number" onChange={ e => this.newManualChange(e, index, 'start', 'minutos') } id={"startM"+index} value={this.getValueTime( index, 'start', 'minutos')} className="segundos-de-corte" />:
-                                    <div className="label-cont"></div>
-                                    <input type="number" onChange={ e => this.newManualChange(e, index, 'start', 'segundos') } id={"startS"+index} value={this.getValueTime( index, 'start', 'segundos')} className="segundos-de-corte" />
+                                    {this.InputComponent(index, 'start', 'segundos')}
                                     
                               </div>
                               <span> - </span>
-                              <div key={Math.floor(Math.random() * (0-500 + 1)) + 0} className="input-cont">
+                              <div className="input-cont">
                                     <div className="label-cont"></div>
-                                    <input type="number" onChange={ e => this.newManualChange(e, index, 'end', 'minutos') } id={"endM"+index} value={this.getValueTime( index, 'end', 'minutos')} className="segundos-de-corte" />:
+                                    {this.InputComponent(index, 'end', 'minutos')}
+                                    :
                                     <div className="label-cont"></div>
-                                    <input type="number" onChange={ e => this.newManualChange(e, index, 'end', 'segundos') } id={"endS"+index} value={this.getValueTime( index, 'end', 'segundos')} className="segundos-de-corte" />
-                                    
+                                    {this.InputComponent(index, 'end', 'segundos')}
                               </div>
                               <br />
                               <textarea onChange={ e => this.corteInfo(e, index, "descripcion") } placeholder='Notas'/>

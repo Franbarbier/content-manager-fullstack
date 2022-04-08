@@ -8,7 +8,7 @@ import './AddTag.css';
 const AddTag = ({setProjectData, projectData}) => {
 
     const [ tagValue, setTagValue] = useState()
-    const [ tagList, setTagList] = useState([])
+    const [ tagList, setTagList] = useState(projectData?.tags ? projectData.tags : [] )
 
 
     useEffect( ()=>{
@@ -27,7 +27,7 @@ const AddTag = ({setProjectData, projectData}) => {
     function deleteTag(e){ setTagList( tagList.filter(item => item !==  e.target.closest('li').textContent.slice(0, -1) ) ); }
 
 
-
+    console.log(tagList)
   function render(){
       return <>
                 <div class="_box">

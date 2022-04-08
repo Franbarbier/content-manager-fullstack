@@ -50,6 +50,7 @@
 }
 
 #project-cards-cont{
+    padding: 10% 0 5%;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-gap: 30px 45px;
