@@ -132,8 +132,8 @@ const NewProject = () => {
         console.log( data.get("new_name") )
         data.append( 'file', file )
 
-        axios.post('http://localhost:5000/upload-video-nugget', data, { 
-        // axios.post('https://fullstack-content-manager.herokuapp.com/upload-video-nugget', data, { 
+        // axios.post('http://localhost:5000/upload-video-nugget', data, { 
+        axios.post('https://fullstack-content-manager.herokuapp.com/upload-video-nugget', data, { 
                     
             onUploadProgress: (progressEvent) => {
                 const progressNugg = ( (progressEvent.loaded / progressEvent.total) * 100 ).toFixed();

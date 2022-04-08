@@ -165,8 +165,8 @@ class VideoEditor extends React.Component {
                 console.log(file)
                 data.append( 'file', file )
                 
-                axios.post('http://localhost:5000/upload-video', data, { 
-                // axios.post('https://fullstack-content-manager.herokuapp.com/upload-video', data, { 
+                // axios.post('http://localhost:5000/upload-video', data, { 
+                axios.post('https://fullstack-content-manager.herokuapp.com/upload-video', data, { 
                     
                     onUploadProgress: (progressEvent) => {
                         const progress = ( (progressEvent.loaded / progressEvent.total) * 100 ).toFixed();
@@ -207,8 +207,8 @@ class VideoEditor extends React.Component {
 
                             console.log(retDataThumb.get('file'));
                             
-                            axios.post('http://localhost:5000/upload-thumb', retDataThumb)
-                            // axios.post('https://fullstack-content-manager.herokuapp.com/upload-thumb', retDataThumb)
+                            // axios.post('http://localhost:5000/upload-thumb', retDataThumb)
+                            axios.post('https://fullstack-content-manager.herokuapp.com/upload-thumb', retDataThumb)
                             .then((e)=>{
                                 this.props.saveLoader("success",false, null)
                             })

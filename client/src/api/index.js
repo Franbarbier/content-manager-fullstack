@@ -8,8 +8,8 @@ const token = window.localStorage.getItem('token');
 //     'Authorization': `Bearer ${token}`
 // }
 
-const ENDPOINT = 'http://localhost:5000/';
-// const ENDPOINT = 'https://fullstack-content-manager.herokuapp.com/';
+// const ENDPOINT = 'http://localhost:5000/';
+const ENDPOINT = 'https://fullstack-content-manager.herokuapp.com/';
 
 
 const url_projects = ENDPOINT+'projects'
