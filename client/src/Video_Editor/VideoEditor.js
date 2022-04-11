@@ -27,18 +27,32 @@ class VideoEditor extends React.Component {
             e.stopPropagation();
           });
 
+
+          var new_url = "https://microcontent-creator.s3.sa-east-1.amazonaws.com/videos/62535c107c59ae80c8a6acce-screen-capture+(2).mp4"
+        //   const data = new FormData(new_url)
+
+
+        // //Bloqueado por CORS
+        var request = new XMLHttpRequest();
+        request.open('GET', new_url, true);
+        request.responseType = 'blob';
+        request.onload = function() {
+            var reader = new FileReader();
+            reader.readAsDataURL(request.response);
+            reader.onload =  function(e){
+                console.log('DataURL:', e.target.result);
+            };
+        };
+        request.send();
+
+
+
+        console.log(request)
     }
-    
-    tuqui = () => {
-        // return '../../../'+this.props.video_url
-    }
-    // tuqui = () => {
-    //     console.log(this.props)
-    // }
+
 
     render_uploader = () => {
         
-        console.log(this.tuqui())
 
         return(
             <div className={"wrapper"}>
@@ -130,12 +144,11 @@ class VideoEditor extends React.Component {
         this.setState({
             isUpload: false,
             videoUrl: fileUrl,
-            hayVid: true,
-            video_data : fileInput[0]
+            // hayVid: true,
+            // video_data : fileInput[0]
         })
 
         
-        console.log(fileInput[0])
         // let file = fileInput[0]
 
         this.props.setVideoURL(fileInput[0].name)

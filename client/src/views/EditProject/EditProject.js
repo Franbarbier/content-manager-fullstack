@@ -217,10 +217,7 @@ const EditProject = () => {
                     <AddTag setProjectData={setProjectData} projectData={projectData} />
                     <VideoEditor video_url={projectData?.video_url} getTotalDuration={getTotalDuration} saved={saved} newId={newId} saveLoader={saveLoader} setVideoURL={setVideoURL} getThumbURL={getThumbURL} activeNugget={ nuggets.filter(nugget => nugget.id == activeNugget) } recordTimings={recordTimings} setCorteInfo={setCorteInfo} parentCallback={handleCallback} />
                 </div>
-                <video class="video" autoload="metadata" controls="">
-                  <source src={"https://fullstack-content-manager.herokuapp.com/public/625045231c1087452aae3d68-screen-capture-_8_.mp4"} type="video/mp4"/>
-
-                  </video>
+                
                 <div id="col-nuggets">
                   <ul id="nuggets-cont">
                         {nuggets.map((nugget, index)=>(

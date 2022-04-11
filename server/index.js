@@ -6,13 +6,14 @@ import cors from 'cors';
 // import methodOverride from 'method-override'; //ver si se desinstala
 // import fileUpload  from 'express-fileupload'; //ver si se desinstala
 import multer from 'multer';
+import multerS3 from 'multer-s3';
+import aws from 'aws-sdk';
 // import GridFsStorage from 'multer-gridfs-storage'; //ver si se desinstala
 
 
 import projectsRoutes from './routes/projects.js';
 
 const app = express();
-
 
 app.use(bodyParser.json({limit: "30mb", extended: true}))
 app.use(bodyParser.urlencoded({limit: "30mb", extended: true}))
@@ -29,44 +30,73 @@ app.use(cors({
 
 
 
-var storage = multer.diskStorage({
 
-        destination : (req, file, cb) =>{
-            cb( null, 'public/')
+// CONFIGURATION OF S3
+aws.config.update({
+    secretAccessKey: "Bv5fEYvbrFCTyqrGeJkOOU2JiS7XUAFMqlNqg4zV",
+    accessKeyId: "AKIAUATTFBPX4IV5H2TF",
+    region: 'sa-east-1'
+});
+
+// CREATE OBJECT FOR S3
+const S3 = new aws.S3();
+// CREATE MULTER FUNCTION FOR UPLOAD
+var upload = multer({
+    // CREATE MULTER-S3 FUNCTION FOR STORAGE
+    storage: multerS3({
+        s3: S3,
+        // bucket - WE CAN PASS SUB FOLDER NAME ALSO LIKE 'bucket-name/sub-folder1'
+        bucket: 'microcontent-creator/videos',
+        // META DATA FOR PUTTING FIELD NAME
+        metadata: function (req, file, cb) {
+            cb(null, { fieldName:  req.body.new_name });
         },
-        filename : (req, file, cb) =>{
-            cb( null, req.body.new_name)
+        // SET / MODIFY ORIGINAL FILE NAME
+        key: function (req, file, cb) {
+            cb(null,  req.body.new_name); //set unique file name if you wise using Date.toISOString()
         }
-})
-const uploadVideo = multer({ storage })
+    })
 
-app.use('/upload-video', uploadVideo.single("file") , (req, res)=>{
+    
+});
+  
+app.post('/upload-video', upload.single('file'), function (req, res, next) {
     req.file.originalname = req.body.new_name
-    return res.status(200).send(req.file)
-} )
+    res.send(req.file);
+});
 
-
-var storageThumb = multer.diskStorage({
-    destination : (req, file, cb) =>{
-        cb( null, 'public')
-    },
-    filename : (req, file, cb) =>{
-        cb( null, file.originalname)
-    }
-})
-
-const uploadThumb = multer({ storageThumb })
-app.use('/upload-thumb', uploadThumb.single("file") , (req, res)=>{
-    return res.status(200).send(req.file)
-} )
-
-
-const uploadVideoNugget = multer({ storage })
-
-app.use('/upload-video-nugget', uploadVideoNugget.single("file") , (req, res)=>{
+app.post('/upload-video-nugget', upload.single('file'), function (req, res, next) {
     req.file.originalname = req.body.new_name
-    return res.status(200).send(req.file)
-} )
+    res.send(req.file);
+});
+
+
+
+var uploadThumb = multer({
+    // CREATE MULTER-S3 FUNCTION FOR STORAGE
+    storage: multerS3({
+        s3: S3,
+        // bucket - WE CAN PASS SUB FOLDER NAME ALSO LIKE 'bucket-name/sub-folder1'
+        bucket: 'microcontent-creator/thujmbs',
+        // META DATA FOR PUTTING FIELD NAME
+        metadata: function (req, file, cb) {
+            cb(null, { fieldName:  file.originalname });
+        },
+        // SET / MODIFY ORIGINAL FILE NAME
+        key: function (req, file, cb) {
+            cb(null,  file.originalname); //set unique file name if you wise using Date.toISOString()
+        }
+    })
+
+});
+  
+app.post('/upload-thumb', uploadThumb.single('file'), function (req, res, next) {
+    req.file.originalname = req.body.new_name
+    res.send(req.file);
+});
+
+
+
 
 
 app.use('/projects', projectsRoutes )
