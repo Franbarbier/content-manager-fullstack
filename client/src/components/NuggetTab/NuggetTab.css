@@ -12,6 +12,7 @@
     z-index: 2;
     box-shadow: 0 0 18px 7px rgb(238 238 238);
     color: #1e1e1e;
+    transition: .2s;
 }
 #nuggets-cont li:hover{
     box-shadow: 0px 0px 6px 3px var(--gris3);

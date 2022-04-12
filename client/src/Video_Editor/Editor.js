@@ -233,6 +233,15 @@ class Editor extends React.Component {
     }
 
     renderGrabbers = () => {
+
+        // var totalDuration;
+        // if (this.props.totalDuration) {
+        //     totalDuration = this.props.totalDuration
+        // }else{
+        //     totalDuration = this.playVideo.current.duration
+        // }
+        // console.log(totalDuration)
+
         return this.state.timings.map((x, index) => (
             <div key={"grabber_"+index}>
                 <div className="grabber start" style={{left: `${x.start / this.playVideo.current.duration * 100}%`}} onMouseDown={(event) => {
@@ -452,9 +461,10 @@ class Editor extends React.Component {
     
 
     onRender = () =>{
-        if (this.props.activeNugget.length > 0) {
+        if (this.props.activeNugget.length == 0) {
             let timer = this.props.activeNugget[0]
             // this.addActiveSegments()
+            return false
         }
 
         if (this.props.activeNugget[0].timings != this.state.timings) {
@@ -506,6 +516,10 @@ class Editor extends React.Component {
                 <video className="video" autoload="metadata" muted={this.state.isMuted} ref={this.playVideo} controls onClick={this.play_pause.bind(this)} >
                     <source src={this.props.videoUrl} type="video/mp4" />
                 </video>
+
+                {/* <video className="video" autoload="metadata" muted={this.state.isMuted} ref={this.playVideo} controls onClick={this.play_pause.bind(this)} >
+                    <source src={"https://microcontent-creator.s3.sa-east-1.amazonaws.com/videos/62535bf77c59ae80c8a6accc-screen-capture+(2).mp4"} type="video/mp4" />
+                </video> */}
                 <div className="playback">
                     {this.renderGrabbers()}
                     <div className="seekable" ref={this.playBackBar} onClick={this.updateProgress}></div>

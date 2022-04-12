@@ -15,6 +15,7 @@ import { createProject } from '../../actions/projects';
 import './EditProject.css';
 import NuggetTab from '../../components/NuggetTab/NuggetTab';
 import AddTag from '../../components/AddTag/AddTag';
+import { serverEndpoint } from '../../globals';
 
 
 const EditProject = () => {
@@ -53,9 +54,12 @@ const EditProject = () => {
   function recordTimings(timing) {
     var oldState = nuggets
     let activeNugg = nuggets.filter(nugget => nugget.id == activeNugget);
+    if (activeNugg == 0) {
+      return false
+    }
     let indexx = oldState.indexOf(activeNugg[0])
-
     oldState[indexx].timings = timing
+
     setNuggets(oldState)
   }
   useEffect( ()=>{
@@ -140,8 +144,7 @@ const EditProject = () => {
         console.log( data.get("new_name") )
         data.append( 'file', file )
 
-        // axios.post('http://localhost:5000/upload-video-nugget', data, { 
-        axios.post('https://fullstack-content-manager.herokuapp.com/upload-video-nugget', data, { 
+        axios.post(serverEndpoint+'upload-video-nugget', data, { 
                     
             onUploadProgress: (progressEvent) => {
                 const progressNugg = ( (progressEvent.loaded / progressEvent.total) * 100 ).toFixed();
@@ -215,7 +218,7 @@ const EditProject = () => {
                     <button id="save-project" onClick={ () => { save_project() }}> {loading ? "GUARDANDO" : projectData ? "GUARDAR CAMBIOS" : "CREAR PROYECTO"}</button>
                   </div>
                     <AddTag setProjectData={setProjectData} projectData={projectData} />
-                    <VideoEditor video_url={projectData?.video_url} getTotalDuration={getTotalDuration} saved={saved} newId={newId} saveLoader={saveLoader} setVideoURL={setVideoURL} getThumbURL={getThumbURL} activeNugget={ nuggets.filter(nugget => nugget.id == activeNugget) } recordTimings={recordTimings} setCorteInfo={setCorteInfo} parentCallback={handleCallback} />
+                    <VideoEditor video_url={projectData?._id+'-'+projectData?.video_url} totalDuration={projectData.duration} getTotalDuration={getTotalDuration} saved={saved} newId={newId} saveLoader={saveLoader} setVideoURL={setVideoURL} getThumbURL={getThumbURL} activeNugget={ nuggets.filter(nugget => nugget.id == activeNugget) } recordTimings={recordTimings} setCorteInfo={setCorteInfo} parentCallback={handleCallback} />
                 </div>
                 
                 <div id="col-nuggets">

@@ -12,6 +12,7 @@ import { createProject } from '../../actions/projects';
 import './NewProject.css';
 import NuggetTab from '../../components/NuggetTab/NuggetTab';
 import AddTag from '../../components/AddTag/AddTag';
+import { serverEndpoint } from '../../globals';
 
 
 const NewProject = () => {
@@ -132,8 +133,7 @@ const NewProject = () => {
         console.log( data.get("new_name") )
         data.append( 'file', file )
 
-        // axios.post('http://localhost:5000/upload-video-nugget', data, { 
-        axios.post('https://fullstack-content-manager.herokuapp.com/upload-video-nugget', data, { 
+        axios.post(serverEndpoint+'upload-video-nugget', data, { 
                     
             onUploadProgress: (progressEvent) => {
                 const progressNugg = ( (progressEvent.loaded / progressEvent.total) * 100 ).toFixed();

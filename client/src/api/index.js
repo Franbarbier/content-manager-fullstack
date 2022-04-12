@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { serverEndpoint } from '../globals';
 
 
 // Obtenemos el token del localStorage
@@ -8,9 +9,7 @@ const token = window.localStorage.getItem('token');
 //     'Authorization': `Bearer ${token}`
 // }
 
-// const ENDPOINT = 'http://localhost:5000/';
-const ENDPOINT = 'https://fullstack-content-manager.herokuapp.com/';
-
+const ENDPOINT = serverEndpoint;
 
 const url_projects = ENDPOINT+'projects'
 export const getProjects = () => axios.get(url_projects);

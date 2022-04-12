@@ -8,6 +8,7 @@ import Editor from './Editor'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faLightbulb, faMoon } from '@fortawesome/free-solid-svg-icons'
 import Testing1 from './testing1';
+import { serverEndpoint } from '../globals';
 
 class VideoEditor extends React.Component {
     constructor(props) {
@@ -27,33 +28,63 @@ class VideoEditor extends React.Component {
             e.stopPropagation();
           });
 
+    
+        this.checkDefaultVid()
 
-          var new_url = "https://microcontent-creator.s3.sa-east-1.amazonaws.com/videos/62535c107c59ae80c8a6acce-screen-capture+(2).mp4"
-        //   const data = new FormData(new_url)
-
-
-        // //Bloqueado por CORS
-        var request = new XMLHttpRequest();
-        request.open('GET', new_url, true);
-        request.responseType = 'blob';
-        request.onload = function() {
-            var reader = new FileReader();
-            reader.readAsDataURL(request.response);
-            reader.onload =  function(e){
-                console.log('DataURL:', e.target.result);
-            };
-        };
-        request.send();
-
-
-
-        console.log(request)
     }
 
 
+    checkDefaultVid = () => {
+        if(this.props.video_url){
+            
+            loadDoc("https://microcontent-creator.s3.sa-east-1.amazonaws.com/videos/"+this.props.video_url.replace(/\s+/g,'+') , myFunction1, this);
+
+            function loadDoc(url, cFunction, este) {
+                
+                var request = new XMLHttpRequest();
+                request.onload = function() {
+                        var fileListFocus;
+                        var reader = new FileReader();
+                        reader.readAsDataURL(request.response);
+                    
+                        reader.onload =  function(e){ cFunction(e, este) }
+                            // console.log(e.target.result)
+                        //     var fileList = new File([e.target.result], "this.props.video_url" , {type:"video/mp4"} )
+                        //     console.log(fileList)
+                        //     // console.log( window.URL.createObjectURL(fileList) )
+
+                        //     fileListFocus = fileList
+                        // };
+
+                    };
+                    request.open('GET', url , true);
+                    request.responseType = 'blob';
+                    
+                        
+                    request.send();
+            
+            }
+
+            function myFunction1(xhttp,este) {
+                var fileList = new File([xhttp.target.result], este.props.video_url , {type:"video/mp4"} )
+                let fileUrl = window.URL.createObjectURL(fileList);
+
+                console.log(fileUrl, fileList)
+                este.setState({
+                    isUpload: false,
+                    videoUrl: fileUrl,
+                    // videoUrl: "https://microcontent-creator.s3.sa-east-1.amazonaws.com/videos/"+este.props.video_url.replace(/\s+/g,'+'),
+                    hayVid: true,
+                    video_data : fileList
+                })
+            }
+
+        }
+    }
+
     render_uploader = () => {
         
-
+      
         return(
             <div className={"wrapper"}>
                 <input
@@ -106,13 +137,24 @@ class VideoEditor extends React.Component {
     render_editor = () => {
         
         
+        console.log(this.state.videoUrl)
         
         return(
             // Props:
             // videoUrl --> URL of uploaded video
             // saveVideo(<metadata of edited video>) --> gives the cut times and if video is muted or not
             <>
-                <Editor getGetTotalDuration={this.getGetTotalDuration} videoUrl={this.state.videoUrl} activeNugget={this.props.activeNugget} checkThumb={this.props.getThumbURL} recordTimings={this.adaptadorTiming} setCorteInfo={this.setCorteInfo} saveVideo={this.saveVideo}/>
+                <Editor 
+                    videoUrl={this.state.videoUrl} 
+                    
+                    totalDuration={this.props.totalDuration} 
+                    getGetTotalDuration={this.getGetTotalDuration} 
+                    activeNugget={this.props.activeNugget} 
+                    checkThumb={this.props.getThumbURL} 
+                    recordTimings={this.adaptadorTiming} 
+                    setCorteInfo={this.setCorteInfo} 
+                    saveVideo={this.saveVideo}
+                />
             </>
         )
     }
@@ -139,18 +181,15 @@ class VideoEditor extends React.Component {
         }
 		let fileUrl = window.URL.createObjectURL(fileInput[0]);
         let filename = fileInput.name;
-        console.log(fileUrl, fileInput)
+        console.log(fileUrl, fileInput[0])
         
         this.setState({
             isUpload: false,
             videoUrl: fileUrl,
-            // hayVid: true,
-            // video_data : fileInput[0]
+            hayVid: true,
+            video_data : fileInput[0]
         })
-
         
-        // let file = fileInput[0]
-
         this.props.setVideoURL(fileInput[0].name)
         this.props.parentCallback(true)
         
@@ -177,9 +216,8 @@ class VideoEditor extends React.Component {
 
                 console.log(file)
                 data.append( 'file', file )
-                
-                // axios.post('http://localhost:5000/upload-video', data, { 
-                axios.post('https://fullstack-content-manager.herokuapp.com/upload-video', data, { 
+                 
+                axios.post(serverEndpoint+'upload-video', data, { 
                     
                     onUploadProgress: (progressEvent) => {
                         const progress = ( (progressEvent.loaded / progressEvent.total) * 100 ).toFixed();
@@ -220,8 +258,7 @@ class VideoEditor extends React.Component {
 
                             console.log(retDataThumb.get('file'));
                             
-                            // axios.post('http://localhost:5000/upload-thumb', retDataThumb)
-                            axios.post('https://fullstack-content-manager.herokuapp.com/upload-thumb', retDataThumb)
+                            axios.post(serverEndpoint+'upload-thumb', retDataThumb)
                             .then((e)=>{
                                 this.props.saveLoader("success",false, null)
                             })
