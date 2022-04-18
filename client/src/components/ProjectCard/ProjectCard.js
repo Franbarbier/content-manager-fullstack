@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import { deleteProject } from '../../actions/projects';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
+import { serverEndpoint } from '../../globals';
 
 // import thumg_img from '../../../../server/public/'
 
@@ -63,14 +65,34 @@ useEffect(()=>{
 
 },[])
 
-function deleteThisProject() {
+function deleteThisProject(e) {
+    e.stopPropagation()
+    e.preventDefault()
     if (window.confirm("Eliminar este proyecto de forma permanente?")) {
-            console.log(project._id)
             // setLoading(true)
             dispatch(deleteProject(project._id, dispatch )).then(
               (e)=> 
+            
                 alert('Se eliminó correctamente'),
-                () => { return false }
+
+                // check and delete video, thumb y video nuggets
+                function deleteAllMedia() {
+                    var video_key = 'videos/' +project._id+'-'+project.video_url
+                    axios.post(serverEndpoint+'delete-item', {video_key} )
+
+                    if(project.thumb_url){
+                        var thumb_key = 'thumbs/' +project._id+'-project-thumb.png'
+                        axios.post(serverEndpoint+'delete-item', {video_key:thumb_key} )
+                    }
+                    for (let index = 0; index < project.nuggets.length; index++) {
+                        const element = project.nuggets[index];
+                        var nuggVid_key = 'videos/nugget' + element.id + "-"+project._id +'-'+ element.video?.name
+                        axios.post(serverEndpoint+'delete-item', {video_key:nuggVid_key} )
+                        
+                    }
+                }()
+                    
+                      
               ).catch( (e) =>{
                 console.log('error:::', e.error)        
             } )
@@ -84,7 +106,7 @@ function deleteThisProject() {
                 <div className='project-card'>
                     <div>
                         <div className="thumb">
-                            <img src="https://i.ytimg.com/vi/QAuJU5FUyC0/maxresdefault.jpg" />
+                            <img src={ project.thumb_url ? "https://content-creator-1.s3.sa-east-1.amazonaws.com/thumbs/"+project._id+"-"+project.thumb_url : "https://i.ytimg.com/vi/QAuJU5FUyC0/maxresdefault.jpg"}/>
                         </div>
                         <div>
                             <h3>{project.name}</h3>
@@ -106,7 +128,7 @@ function deleteThisProject() {
                                 <span>{tag}</span>
                             ))}
                         </div>
-                        <div onClick={ ()=>{ deleteThisProject() }  } className="delete-cont">
+                        <div onClick={ (e)=>{ deleteThisProject(e) }  } className="delete-cont">
                             <div>
                                 <img src="./assets/delete-trash.png" />
                             </div>

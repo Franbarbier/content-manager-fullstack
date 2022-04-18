@@ -31,3 +31,15 @@ export const deleteProject = async (req, res)=>{
     await Project.findByIdAndRemove(id)
     res.json({message: 'Project deleted succesfully', id: id})
 }
+
+export const editProject = async (req, res) =>{
+    const project = req.body
+    const filter = {_id: req.body._id}
+    var updateProject = await Project.findOneAndUpdate(filter, project, {new: true}).exec()
+    
+    try{            
+        res.status(201).json({updateProject})
+    }catch(error){
+        res.status(409).json({message: error.message})
+    }
+}

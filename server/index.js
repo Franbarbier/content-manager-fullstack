@@ -33,8 +33,8 @@ app.use(cors({
 
 // CONFIGURATION OF S3
 aws.config.update({
-    secretAccessKey: "Bv5fEYvbrFCTyqrGeJkOOU2JiS7XUAFMqlNqg4zV",
-    accessKeyId: "AKIAUATTFBPX4IV5H2TF",
+    secretAccessKey: "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",
+    accessKeyId: "AKIASH5RS7HLRHZUIGHQ",
     region: 'sa-east-1'
 });
 
@@ -46,7 +46,7 @@ var upload = multer({
     storage: multerS3({
         s3: S3,
         // bucket - WE CAN PASS SUB FOLDER NAME ALSO LIKE 'bucket-name/sub-folder1'
-        bucket: 'microcontent-creator/videos',
+        bucket: 'content-creator-1/videos',
         // META DATA FOR PUTTING FIELD NAME
         metadata: function (req, file, cb) {
             cb(null, { fieldName:  req.body.new_name });
@@ -77,7 +77,7 @@ var uploadThumb = multer({
     storage: multerS3({
         s3: S3,
         // bucket - WE CAN PASS SUB FOLDER NAME ALSO LIKE 'bucket-name/sub-folder1'
-        bucket: 'microcontent-creator/thujmbs',
+        bucket: 'content-creator-1/thumbs',
         // META DATA FOR PUTTING FIELD NAME
         metadata: function (req, file, cb) {
             cb(null, { fieldName:  file.originalname });
@@ -95,7 +95,22 @@ app.post('/upload-thumb', uploadThumb.single('file'), function (req, res, next) 
     res.send(req.file);
 });
 
-
+app.post('/delete-item', function (req, res ) {
+    console.log(req.body)
+    S3.deleteObject(
+        {
+            Bucket: 'content-creator-1',
+            Key: req.body.video_key
+        }, function(deleteErr, data) {
+        if (deleteErr) {
+            console.log("Error: " + deleteErr);
+        }
+        else {
+            console.log('Successfully deleted the item');
+        }
+    });
+    res.send(req.body);
+});
 
 
 

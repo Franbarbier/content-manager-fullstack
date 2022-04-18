@@ -43,7 +43,7 @@ function getValueTime(value)  {
       return  <>
                      <div id="modal-back">
                             <div id="modal-cont-nuggetInfo">
-                                   <img id="close-modal-infoNugget" onClick={  () => {setRenderInfoNugget(false)} } src="./assets/cancel.svg" />
+                                   <img id="close-modal-infoNugget" onClick={  () => {setRenderInfoNugget(false)} } src="/assets/cancel.svg" />
                                    <div>
                                           <h3>{nugget.nombre}</h3>
                                           <div>

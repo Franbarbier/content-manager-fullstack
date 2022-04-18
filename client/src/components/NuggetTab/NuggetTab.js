@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import NuggetProgress from './NuggetProgress/NuggetProgress';
+import axios from 'axios';
+import { serverEndpoint } from '../../globals';
 
 
 import './NuggetTab.css';
 
 
-const NuggetTab = ({ nuggets, nugget, index, activeNugget, setActiveNugget, setNuggets, setRenderInfoNugget }) => {
+const NuggetTab = ({ nuggets, nugget, index, activeNugget, setActiveNugget, setNuggets, setRenderInfoNugget, project_id }) => {
 
 const [estadoNugget, setEstadoNugget] = useState(nugget.estado)
-const [videoFileNugg, setVideoFileNugg,] = useState()
+const [videoFileNugg, setVideoFileNugg] = useState()
+const [progressUpload, setProgressUpload] = useState()
 const [videoNugget, setVideoNugget] = useState({
        estado : "No elegido"
 })
@@ -88,7 +91,13 @@ function updateNuggetName(e){
 }
 
 function selectFileNugget(e){
-       console.log(e.target.files[0].name)
+
+       if(videoNugget.nombre){
+              // Eliminar de AWS
+              console.log("Ya habia uno")
+              deleteNuggetVideo(e, "videos/")
+       }
+
        setVideoNugget({ ...videoNugget, nombre: e.target.files[0].name, estado: "elegido"   })
        setVideoFileNugg(e.target.files[0])
 
@@ -100,14 +109,68 @@ function selectFileNugget(e){
        setNuggets(newNuggets)
 }
 
+function deleteNuggetVideo(e, directory) {
+       e.preventDefault()
+
+       
+       if ( window.confirm("Desea eliminar el video de este nugget?") ) {
+       
+              var video_key = directory+'nugget' + nugget.id + "-"+project_id +'-'+ videoFileNugg?.name
+              axios.post(serverEndpoint+'delete-item', {video_key}, { 
+                    
+              onUploadProgress: (progressEvent) => {
+                  const progressNugg = ( (progressEvent.loaded / progressEvent.total) * 100 ).toFixed();
+                  setProgressUpload(progressNugg);
+              }
+  
+          } )
+          .then((e)=>{
+                     console.log('eliminado', e)
+                     setVideoNugget({estado: "No elegido"})
+                     setEstadoNugget(1)              
+              })
+              .catch( (e) =>{
+                     console.log('error:::', e.error)
+              } )
+       } 
+}
+
+useEffect(()=>{
+       
+       
+       let file = videoFileNugg
+       const data = new FormData()
+       var new_name = 'nugget' + nugget.id + "-"+project_id +'-'+ videoFileNugg?.name
+       data.append('new_name',new_name)
+       data.append( 'file', file )
+       
+
+        axios.post(serverEndpoint+'upload-video-nugget', data, { 
+                    
+            onUploadProgress: (progressEvent) => {
+                const progressNugg = ( (progressEvent.loaded / progressEvent.total) * 100 ).toFixed();
+                setProgressUpload(progressNugg+1);
+                console.log(progressUpload)
+            }
+
+        } )
+        .then((e)=>{
+          console.log('el nugget video subido', e)
+          setProgressUpload(101)
+        })
+        .catch( (e) =>{
+            console.log('error:::', e.error)
+        } )
+}, [videoFileNugg] )
+
 
   function render(){
       return <li className={nugget.id == activeNugget && 'nuggetSelected'} onClick={ (e) => { checkDeleted(e, nugget.id) } } >
                      <div id="nugget-titulo">
                             <h4>{index+1} ) </h4>
                             <input defaultValue={nugget.nombre} onChange={ (e) => { updateNuggetName(e) } }  />
-                            <div className="look" onClick={  () => {setRenderInfoNugget(true)} } ><img src="./assets/look.png" /> </div>
-                            <div className="copy" onClick={ (e) => { copy_txt(e) } } ><img src="./assets/copy.png" /> <p>Copiado en papelera!</p> </div>
+                            <div className="look" onClick={  () => {setRenderInfoNugget(true)} } ><img src="/assets/look.png" /> </div>
+                            <div className="copy" onClick={ (e) => { copy_txt(e) } } ><img src="/assets/copy.png" /> <p>Copiado en papelera!</p> </div>
                      </div>
                      <div>
                             <NuggetProgress estadoNugget={estadoNugget} setEstadoNugget={setEstadoNugget} />
@@ -118,16 +181,23 @@ function selectFileNugget(e){
                                    <label className="labelVidNugget" for={`addVid${nugget.id}`}>
                                           <input onChange={(e)=>{ selectFileNugget(e) } } id={`addVid${nugget.id}`} type="file" />
                                           <div>  
-                                                 { videoNugget.estado == "elegido" ? <img src="./assets/comprobar1.png" width='12px' style={{'marginRight':'5px' , 'transform': 'translateY(12%)', 'transition':'.2s'}} /> : <img src="./assets/clip-de-papel.png" width='12px' style={{'marginRight':'5px'}} /> }
+                                                 { videoNugget.estado == "elegido" ? <img src="/assets/comprobar1.png" width='12px' style={{'marginRight':'5px' , 'transform': 'translateY(12%)', 'transition':'.2s'}} /> : <img src="/assets/clip-de-papel.png" width='12px' style={{'marginRight':'5px'}} /> }
                                                  
                                                  <span>{ videoNugget.estado == "elegido" ? videoNugget.nombre : "No hay video subido" }</span>
                                           </div>
                                           {/* { videoNugget.estado == "elegido" && <button className="upload-video-nugget" onClick={ (e) => { uploadVideoNugget(e, index) } } >SUBIR</button> } */}
-                                          { videoNugget.estado == "elegido" && <button className="edit-video-nugget">EDITAR</button> }
+                                          { videoNugget.estado == "elegido" &&
+                                                 <div className='video-options'>
+                                                        <div><a href={'https://content-creator-1.s3.sa-east-1.amazonaws.com/videos/nugget' + nugget.id + "-"+project_id +'-'+ videoFileNugg?.name.replaceAll( "+", "%2B" ).replace(/\s+/g,'+')}><img src="/assets/download.png" title="Descargar"/></a></div>
+                                                        <div><img src="/assets/pencil.png" onClick={ document.getElementById(`addVid${nugget.id}`).click } title="Editar"/></div>
+                                                        <div><img src="/assets/delete.png" onClick={ (e)=>{deleteNuggetVideo(e, 'videos/')} } title="Eliminar"/></div>
+                                                 </div>
+                                          }
+                                          {/* { videoNugget.estado == "elegido" && <button className="edit-video-nugget">EDITAR</button> } */}
                                           {/* { videoNugget.estado == "subido" && 
                                                  <div className='btns-cont'>
-                                                        <button className="delete-video-nugget"><img width='18px' src="./assets/delete.png"/></button>
-                                                        <button className="download-video-nugget"><img width='18px' src="./assets/download.png"/></button>
+                                                        <button className="delete-video-nugget"><img width='18px' src="/assets/delete.png"/></button>
+                                                        <button className="download-video-nugget"><img width='18px' src="/assets/download.png"/></button>
                                                  </div>
                                           } */}
                                           <div id="progress-bar" style={{ 'width': `${videoNugget.progress}%` }} ></div>
@@ -135,7 +205,7 @@ function selectFileNugget(e){
                                    </label>
                             </div>
                      </div>
-                     <img className="delete-nugget" data-index={index} src="./assets/cancel.svg" onClick={ () => { deleteNugget() } } /> 
+                     <img className="delete-nugget" data-index={index} src="/assets/cancel.svg" onClick={ () => { deleteNugget() } } /> 
               </li>
              
 

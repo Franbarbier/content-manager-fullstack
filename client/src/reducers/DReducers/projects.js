@@ -9,6 +9,15 @@ export default (state=[], action) => {
         case 'DELETE_PROJECT':
             var id_deleted = action.payload.id
             return state.filter((projects)=> projects._id != id_deleted);
+        case 'EDIT_PROJECT':
+            for(let pryecto in state){
+                if(pryecto._id === action.payload._id){
+                    state[pryecto] = action.payload
+                    console.log(state[pryecto])
+                }
+            }
+
+            return [...state]
         default:
             return state;
     }

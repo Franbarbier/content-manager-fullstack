@@ -27,7 +27,6 @@ const AddTag = ({setProjectData, projectData}) => {
     function deleteTag(e){ setTagList( tagList.filter(item => item !==  e.target.closest('li').textContent.slice(0, -1) ) ); }
 
 
-    console.log(tagList)
   function render(){
       return <>
                 <div class="_box">

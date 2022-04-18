@@ -10,11 +10,12 @@ import './testing1.css';
 
 
 class Editor extends React.Component {
+
     constructor(props) {
         super(props);
         this.state = {
             isMuted: false,
-            timings: [],
+            timings: this.props.projectData?.nuggets[0].timings ? this.props.projectData?.nuggets[0].timings : [],
             playing: false,
             currently_grabbed: {"index": 0, "type": "none"},
             difference: 0.2,
@@ -24,14 +25,24 @@ class Editor extends React.Component {
             tuqui : "",
             totalDuration: 0,
             formatedTimings: []
-
+            
         }
         this.playVideo = React.createRef();
         this.progressBar = React.createRef();
         this.playBackBar = React.createRef();
+
+        
     }
-
-
+    
+    // if (this.props.projectData) {
+    //     var bornTimings =  this.props.projectData.nuggets[0].timings
+    // }else{
+    //     var bornTimings = [{
+    //         start: 0,
+    //         end: 0
+    //     }]
+    // }
+  
     warnings = {
         "delete_grabber": (<div>Seleccione el punto de partida o de fin del corte que desea eliminar.</div>)
     }
@@ -40,24 +51,35 @@ class Editor extends React.Component {
 
 
     componentDidMount = () => {
-    // Check if video ended
+        
+        if (this.props.projectData) {
+            this.setState({timings: this.props.projectData.nuggets[0].timings })
+        }
+
+        
+        // Check if video ended
         var self = this
+        
         this.playVideo.current.addEventListener('timeupdate', function () {
+            
+            self.playVideo.current.duration = 120
+            self.playVideo.current.start = 0
+
             var curr_idx = self.state.currently_grabbed.index
-            var seek = (self.playVideo.current.currentTime - self.state.timings[curr_idx].start) / self.playVideo.current.duration * 100;
+            var seek = (self.playVideo.current?.currentTime - self.state.timings[curr_idx].start) / self.playVideo.current?.duration * 100;
             self.progressBar.current.style.width = `${seek}%`;
             
             // this.setState({duration: 25})
 
-            if ((self.playVideo.current.currentTime >= self.state.timings[self.state.timings.length-1].end)){
-                self.playVideo.current.pause()
+            if ((self.playVideo.current?.currentTime >= self.state.timings[self.state.timings.length-1].end)){
+                self.playVideo.current?.pause()
                 self.setState({playing: false})
             }
-            else if(self.playVideo.current.currentTime >= self.state.timings[curr_idx].end){
+            else if(self.playVideo.current?.currentTime >= self.state.timings[curr_idx].end){
                 if((curr_idx+1) < self.state.timings.length){
                     self.setState({currently_grabbed: {"index": curr_idx+1, "type": "start"}}, () => {
                         self.progressBar.current.style.width = '0%'
-                        self.progressBar.current.style.left = `${self.state.timings[curr_idx+1].start / self.playVideo.current.duration * 100}%`;
+                        self.progressBar.current.style.left = `${self.state.timings[curr_idx+1].start / self.playVideo.current?.duration * 100}%`;
                         self.playVideo.current.currentTime = self.state.timings[curr_idx+1].start;
                     })
                 }
@@ -76,7 +98,8 @@ class Editor extends React.Component {
 
 
         this.playVideo.current.onloadedmetadata = () => {
-            this.setState({ totalDuration: this.playVideo.current.duration}, () => {
+            
+            this.setState({ totalDuration: this.playVideo.current?.duration}, () => {
                 this.addActiveSegments()
             });
         }
@@ -90,10 +113,10 @@ class Editor extends React.Component {
 
     reset = () => {
         
-        this.playVideo.current.pause()
+        this.playVideo.current?.pause()
         this.setState({
             isMuted: false,
-            timings: [{'start': 0, 'end': this.playVideo.current.duration}],
+            timings: [{'start': 0, 'end': this.playVideo.current?.duration}],
             playing: false,
             currently_grabbed: {"index": 0, "type": "none"},
             difference: 0.2,
@@ -102,7 +125,7 @@ class Editor extends React.Component {
             imageUrl: ""
         }, () => {
             this.playVideo.current.currentTime = this.state.timings[0].start;
-            this.progressBar.current.style.left = `${this.state.timings[0].start / this.playVideo.current.duration * 100}%`;
+            this.progressBar.current.style.left = `${this.state.timings[0].start / this.playVideo.current?.duration * 100}%`;
             this.progressBar.current.style.width = "0%";
             this.addActiveSegments();
         })
@@ -133,11 +156,11 @@ class Editor extends React.Component {
 
     skipPrevious = () => {
         if(this.state.playing){
-            this.playVideo.current.pause()
+            this.playVideo.current?.pause()
         }
         var prev_idx = (this.state.currently_grabbed.index != 0) ? (this.state.currently_grabbed.index-1) : (this.state.timings.length-1)
         this.setState({currently_grabbed: {"index": prev_idx , "type": "start"}, playing: false}, () => {
-            this.progressBar.current.style.left = `${this.state.timings[prev_idx].start / this.playVideo.current.duration * 100}%`;
+            this.progressBar.current.style.left = `${this.state.timings[prev_idx].start / this.playVideo.current?.duration * 100}%`;
             this.progressBar.current.style.width = '0%'
             this.playVideo.current.currentTime = this.state.timings[prev_idx].start;
         })
@@ -146,18 +169,18 @@ class Editor extends React.Component {
     play_pause = () => {
         var self = this
         if(this.state.playing){
-            this.playVideo.current.pause()
+            this.playVideo.current?.pause()
         }
         else{
-            if ((self.playVideo.current.currentTime >= self.state.timings[self.state.timings.length-1].end)){
-                self.playVideo.current.pause()
+            if ((self.playVideo.current?.currentTime >= self.state.timings[self.state.timings.length-1].end)){
+                self.playVideo.current?.pause()
                 self.setState({playing: false, currently_grabbed: {"index": 0, "type": "start"}}, () => {
                     self.playVideo.current.currentTime = self.state.timings[0].start;
-                    self.progressBar.current.style.left = `${self.state.timings[0].start / self.playVideo.current.duration * 100}%`;
+                    self.progressBar.current.style.left = `${self.state.timings[0].start / self.playVideo.current?.duration * 100}%`;
                     self.progressBar.current.style.width = "0%";
                 })
             }
-            this.playVideo.current.play()
+            this.playVideo.current?.play()
         }
         this.setState({playing: !this.state.playing})
     }
@@ -165,11 +188,11 @@ class Editor extends React.Component {
 
     skipNext = () => {
         if(this.state.playing){
-            this.playVideo.current.pause()
+            this.playVideo.current?.pause()
         }
         var next_idx = (this.state.currently_grabbed.index != (this.state.timings.length-1)) ? (this.state.currently_grabbed.index+1) : 0
         this.setState({currently_grabbed: {"index": next_idx , "type": "start"}, playing: false}, () => {
-            this.progressBar.current.style.left = `${this.state.timings[next_idx].start / this.playVideo.current.duration * 100}%`;
+            this.progressBar.current.style.left = `${this.state.timings[next_idx].start / this.playVideo.current?.duration * 100}%`;
             this.progressBar.current.style.width = '0%'
             this.playVideo.current.currentTime = this.state.timings[next_idx].start;
         })
@@ -177,8 +200,8 @@ class Editor extends React.Component {
 
     updateProgress = (event) => {
         var playbackRect = this.playBackBar.current.getBoundingClientRect();
-        var seekTime = ((event.clientX - playbackRect.left) / playbackRect.width) * this.playVideo.current.duration
-        this.playVideo.current.pause()
+        var seekTime = ((event.clientX - playbackRect.left) / playbackRect.width) * this.playVideo.current?.duration
+        this.playVideo.current?.pause()
         // find where seekTime is in the segment
         var index = -1;
         var counter = 0;
@@ -191,11 +214,10 @@ class Editor extends React.Component {
         if(index == -1){
             return
         }
-        console.log(this.state.currently_grabbed.index)
 
         this.setState({playing: false, currently_grabbed: {"index": index, "type": "start"}}, () => {
             this.progressBar.current.style.width = '0%' // Since the width is set later, this is necessary to hide weird UI
-            this.progressBar.current.style.left = `${this.state.timings[index].start / this.playVideo.current.duration * 100}%`
+            this.progressBar.current.style.left = `${this.state.timings[index].start / this.playVideo.current?.duration * 100}%`
             this.playVideo.current.currentTime = seekTime
         })
 
@@ -203,22 +225,22 @@ class Editor extends React.Component {
     }
 
     startGrabberMove = (event) => {
-        this.playVideo.current.pause()
+        this.playVideo.current?.pause()
         var playbackRect = this.playBackBar.current.getBoundingClientRect();
         var seekRatio = (event.clientX - playbackRect.left) / playbackRect.width
         const index = this.state.currently_grabbed.index
         const type = this.state.currently_grabbed.type
         window.addEventListener("mouseup", () => {window.removeEventListener('mousemove', this.startGrabberMove); this.addActiveSegments()})
         var time = this.state.timings
-        var seek = this.playVideo.current.duration * seekRatio
+        var seek = this.playVideo.current?.duration * seekRatio
         if((type == "start") && (seek > ((index != 0) ? (time[index-1].end+this.state.difference+0.2) : 0)) && seek < time[index].end-this.state.difference){
             this.progressBar.current.style.left = `${seekRatio*100}%`
             this.playVideo.current.currentTime = seek
             time[index]["start"] = seek
             this.setState({timings: time, playing: false})
         }
-        else if((type == "end") && (seek > time[index].start+this.state.difference) && (seek < (index != (this.state.timings.length-1) ? time[index+1].start-this.state.difference-0.2 : this.playVideo.current.duration))){
-            this.progressBar.current.style.left = `${time[index].start / this.playVideo.current.duration * 100}%`
+        else if((type == "end") && (seek > time[index].start+this.state.difference) && (seek < (index != (this.state.timings.length-1) ? time[index+1].start-this.state.difference-0.2 : this.playVideo.current?.duration))){
+            this.progressBar.current.style.left = `${time[index].start / this.playVideo.current?.duration * 100}%`
             this.playVideo.current.currentTime = time[index].start
             time[index]["end"] = seek
             this.setState({timings: time, playing: false})
@@ -233,17 +255,10 @@ class Editor extends React.Component {
 
     renderGrabbers = () => {
 
-        // var totalDuration;
-        // if (this.props.totalDuration) {
-        //     totalDuration = this.props.totalDuration
-        // }else{
-        //     totalDuration = this.playVideo.current.duration
-        // }
-        // console.log(totalDuration)
 
         return this.state.timings.map((x, index) => (
             <div key={"grabber_"+index}>
-                <div className="grabber start" style={{left: `${x.start / this.playVideo.current.duration * 100}%`}} onMouseDown={(event) => {
+                <div className="grabber start" style={{left: `${x.start / this.playVideo.current?.duration * 100}%`}} onMouseDown={(event) => {
                     if(this.state.deletingGrabber){
                         this.deleteGrabber(index)
                     }
@@ -255,7 +270,7 @@ class Editor extends React.Component {
                 }}>
                    [
                 </div>
-                <div className="grabber end" style={{left: `${x.end / this.playVideo.current.duration * 100}%`}} onMouseDown={(event) => {
+                <div className="grabber end" style={{left: `${x.end / this.playVideo.current?.duration * 100}%`}} onMouseDown={(event) => {
                     if(this.state.deletingGrabber){
                         this.deleteGrabber(index)
                     }
@@ -275,11 +290,11 @@ class Editor extends React.Component {
         var time = this.state.timings
         var end = time[time.length-1].end+this.state.difference
         this.setState({deletingGrabber: false, current_warning: null})
-        if(end >= this.playVideo.current.duration){
+        if(end >= this.playVideo.current?.duration){
             alert('Asegurate que el ultimo corte no llegue hasta el final del video :)')
             return
         }
-        time.push({"start": end+0.2, "end": this.playVideo.current.duration})
+        time.push({"start": end+0.2, "end": this.playVideo.current?.duration})
         this.setState({timings: time}, () => {
             this.addActiveSegments()
         })
@@ -301,7 +316,7 @@ class Editor extends React.Component {
             return
         }
         time.splice(index, 1);
-        this.progressBar.current.style.left = `${time[0].start / this.playVideo.current.duration * 100}%`;
+        this.progressBar.current.style.left = `${time[0].start / this.playVideo.current?.duration * 100}%`;
         this.playVideo.current.currentTime = time[0].start;
         this.progressBar.current.style.width = "0%";
         this.addActiveSegments();
@@ -348,54 +363,7 @@ class Editor extends React.Component {
         return (num * 100) / this.state.totalDuration
     }
 
-    newManualChange = (event, index, point, type) => {
-
-        var mins = event.target.closest('.input-cont').querySelector('#'+point+'M'+index).value
-        var segs = event.target.closest('.input-cont').querySelector('#'+point+'S'+index).value
-
-        var newTime = (mins*60)*1 + segs*1
-                
-        var childData = {
-            "value" : newTime,
-            "point" : point,
-            "index" : index
-        }
-
-        let newTimings = this.state.timings
-        newTimings[childData.index][childData.point] = childData.value * 1
-
-            this.setState({
-                timings: newTimings
-            })        
-
-        this.props.recordTimings(newTimings)
-        // console.log(newTimings, newTime, index, point, type )
-    }
-
-    newManualChangeSubState = (event, index, point, type) => {
-
-        var mins = event.target.closest('.input-cont').querySelector('#'+point+'M'+index).value
-        var segs = event.target.closest('.input-cont').querySelector('#'+point+'S'+index).value
-
-        var newTime = (mins*60)*1 + segs*1
-                
-        var childData = {
-            "value" : newTime,
-            "point" : point,
-            "index" : index
-        }
-        
-        console.log(childData)
-        
-        let newTimings = this.state.timings
-        newTimings[childData.index][childData.point] = childData.value * 1
-
-        // this.setState({
-        //     timings: newTimings
-        // })
-
-        this.props.recordTimings(newTimings)
-    }
+    
     refreshInputVal = (value, index, point, type) => {
         
         var mins = document.querySelectorAll('.cortes')[index].querySelector('#'+point+'minutos'+index).value
@@ -414,8 +382,6 @@ class Editor extends React.Component {
         let newTimings = this.state.timings
         newTimings[childData.index][childData.point] = childData.value * 1
 
-        console.log(newTimings)
-
         this.setState({
             timings: newTimings
         })
@@ -424,7 +390,14 @@ class Editor extends React.Component {
     }
 
     corteInfo = (e, index, type) => {
-        this.props.setCorteInfo( index, e.target.value, type )
+        let newTimings = this.state.timings
+        newTimings[index][type] = e.target.value
+
+        this.setState({
+            timings: newTimings
+        })
+
+        // this.props.setCorteInfo( index, e.target.value, type )
     }
   
     getValueTime = (index, point, type) => {
@@ -485,8 +458,6 @@ class Editor extends React.Component {
 
             }
 
-            console.log(this.state.timings)
-
         }else{
             return false
         }
@@ -514,18 +485,14 @@ class Editor extends React.Component {
             <div className="wrapper">
                 <video className="video" autoload="metadata" muted={this.state.isMuted} ref={this.playVideo} controls onClick={this.play_pause.bind(this)} >
                     <source src={this.props.videoUrl} type="video/mp4" />
-                </video>
+                </video>      
 
-                {/* <video className="video" autoload="metadata" muted={this.state.isMuted} ref={this.playVideo} controls onClick={this.play_pause.bind(this)} >
-                    <source src={"https://microcontent-creator.s3.sa-east-1.amazonaws.com/videos/62535bf77c59ae80c8a6accc-screen-capture+(2).mp4"} type="video/mp4" />
-                </video> */}
                 <div className="playback">
                     {this.renderGrabbers()}
                     <div className="seekable" ref={this.playBackBar} onClick={this.updateProgress}></div>
                     <div className="progress" ref={this.progressBar}></div>
                     <div className="palito"></div>
                 </div>
-
                 <div className="controls">
                     <div className="player-controls">
                         {/* <button className="settings-control" title="Reset Video" onClick={this.reset}><FontAwesomeIcon icon={faSync} /></button> */}
@@ -564,8 +531,7 @@ class Editor extends React.Component {
                     <ul>
                     {this.state.timings.map((corte, index)=>(
                         <li className="cortes" id={Math.floor(Math.random() * (0-500 + 1)) + 0}>
-
-                              <input type="name" className="corte-titulo" onChange={ e => this.corteInfo(e, index, "titulo") } defaultValue={`Corte ${index+1}`} />
+                              <input type="name" className="corte-titulo" onChange={ e => this.corteInfo(e, index, "titulo") }value={corte.titulo ? corte.titulo : 'Corte ' + index }  />
 
                               <div  className='corte-progress' style={{'background':`linear-gradient(90deg, var(--gris2) ${this.pasarAPor(corte.start)}%, var(--violeta) ${this.pasarAPor(corte.start)}%, var(--violeta) ${this.pasarAPor(corte.end)}%, var(--gris2) ${this.pasarAPor(corte.end)}%)`}}>
                               </div>
@@ -588,7 +554,7 @@ class Editor extends React.Component {
                                     {this.InputComponent(index, 'end', 'segundos')}
                               </div>
                               <br />
-                              <textarea onChange={ e => this.corteInfo(e, index, "descripcion") } placeholder='Notas'/>
+                              <textarea onChange={ e => this.corteInfo(e, index, "descripcion") } value={corte.descripcion ? corte.descripcion : ''} placeholder='Notas'/>
                             </li>
                         
                       ))

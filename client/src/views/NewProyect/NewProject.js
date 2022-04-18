@@ -4,7 +4,7 @@ import axios from 'axios';
 
 import VideoEditor from '../../Video_Editor/VideoEditor';
 import NuggetProgress from '../../components/NuggetTab/NuggetProgress/NuggetProgress';
-
+import { Redirect } from "react-router-dom";
 import ModalInfoTag from '../../components/ModalInfoNugget/ModalInfoNugget';
 
 import { createProject } from '../../actions/projects';
@@ -51,9 +51,7 @@ const NewProject = () => {
     setNuggets(oldState)
     // console.log(oldState)
   }
-  useEffect( ()=>{
-    console.log(nuggets)
-  }, [projectData] )
+
 
   function setCorteInfo(index, value, type ){
 
@@ -144,6 +142,7 @@ const NewProject = () => {
         } )
         .then((e)=>{
           console.log('el nugget video subido', e)
+          return true
         })
         .catch( (e) =>{
             console.log('error:::', e.error)
@@ -155,8 +154,12 @@ const NewProject = () => {
     }
   }
 
-  function saved_project(id){
-    uploadVideosNuggets(id)  
+  async function saved_project(id){
+
+    const onSuccess = () => {return <Redirect to="/"/> }
+    await uploadVideosNuggets(id) 
+    onSuccess()
+    
     setNewId(id)
     setTimeout(() => {
       setSaved(saved + 1)
@@ -185,6 +188,9 @@ const NewProject = () => {
     setProjectData( { ...projectData, duration: duration  } )
   }
 
+  function progressUploadVideoNugget(progress, index){
+    console.log(progress*1 , index)
+  }
   useEffect(()=>{
     setProjectData( { ...projectData, nuggets: nuggets  } )
     console.log(nuggets)
@@ -193,15 +199,10 @@ const NewProject = () => {
   useEffect(()=>{
     setProjectData( { ...projectData, name: "Nuevo proyecto"  } )
   }, [])
-
   useEffect(()=>{
     console.log(projectData)
-  }, [projectData])
+  })
 
-
-  function progressUploadVideoNugget(progress, index){
-    console.log(progress*1 , index)
-  }
 
   function render(){
       return  <div id="NewProject-view">

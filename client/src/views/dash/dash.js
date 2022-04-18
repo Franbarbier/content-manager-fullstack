@@ -13,8 +13,8 @@ const Dash = ({setActiveTab }) => {
     const dispatch = useDispatch()
 
     var projects = useSelector(state => state.projects)
-
-    console.log(projects)
+    
+    console.log(projects )
 
     function changeBsucador(e){
         setBuscador(e.target.value)

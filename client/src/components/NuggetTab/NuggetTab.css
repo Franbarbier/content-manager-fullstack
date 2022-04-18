@@ -177,3 +177,17 @@
 .btns-cont button:hover{
     filter: invert(0);
 }
+.video-options {
+    display: flex;
+}
+.video-options>div{
+    margin-left: 10px;
+}
+.video-options img{
+    opacity: 0.7;
+    width: 16px;
+    transition: .2s;
+}
+.video-options img:hover{
+    opacity: 0.9;
+}

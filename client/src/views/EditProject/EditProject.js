@@ -8,7 +8,7 @@ import { useParams } from "react-router-dom";
 
 import ModalInfoNugget from '../../components/ModalInfoNugget/ModalInfoNugget';
 
-import { createProject } from '../../actions/projects';
+import { editProject } from '../../actions/projects';
 
 // import videoSrc from '../../../server/public/nugget1-625045231c1087452aae3d68-screen-capture (10).mp4';
 
@@ -24,15 +24,13 @@ const EditProject = () => {
   const projects = useSelector(state => state?.projects)
   const project = projects.filter((proyecto)=>proyecto._id === id)[0]
 
-  console.log(project)
-
   const [projectData, setProjectData] = useState(project && project)
   const [saved, setSaved] = useState(0)
   const [newId, setNewId] = useState(0)
   const [loading, setLoading] = useState(false)
   const [nuggets, setNuggets] = useState(project ? project.nuggets : [])
   const [nuggetCounter, setNuggetCounter] = useState(1)
-  const [activeNugget, setActiveNugget] = useState(0)
+  const [activeNugget, setActiveNugget] = useState(1)
   const [renderInfoNugget, setRenderInfoNugget] = useState(false)
   const [progress, setProgress] = useState()
 
@@ -41,13 +39,14 @@ const EditProject = () => {
   const dispatch = useDispatch()
 
   function nuevo_nugget() {
+
     var newNugget = {};
-    newNugget.id = nuggetCounter
+    newNugget.id = nuggets[nuggets.length - 1].id + 1
     newNugget.nombre = 'Nombre del nugget'
     newNugget.timings = []
     newNugget.estado = 0
     setNuggets(nuggets => [...nuggets, newNugget])
-    setNuggetCounter(nuggetCounter + 1)
+    setNuggetCounter(newNugget.id)
     setActiveNugget(nuggetCounter)
   }
 
@@ -62,9 +61,7 @@ const EditProject = () => {
 
     setNuggets(oldState)
   }
-  useEffect( ()=>{
-    console.log(projectData)
-  }, [projectData] )
+
 
   function setCorteInfo(index, value, type ){
 
@@ -176,20 +173,19 @@ const EditProject = () => {
 
   function save_project(){
 
+    console.log('qw')
     setLoading(true)
 
-    dispatch(createProject(projectData)).then(
+    editProject(projectData, dispatch).then(
       (e)=> 
-      saved_project(e._id),
-        alert('Se guardó correctamente el proyecto')
-        
+        alert('Se guardó correctamente el proyecto'),
+        setLoading(false)
+
 
       ).catch( (e) =>{
         console.log('error:::', e.error)
         this.props.saveLoader("error",false)
-
     } )
-
   }
 
   function getTotalDuration(duration){
@@ -198,33 +194,26 @@ const EditProject = () => {
 
   useEffect(()=>{
     setProjectData( { ...projectData, nuggets: nuggets  } )
-    // console.log(nuggets)
   }, [nuggets])
 
-  useEffect(()=>{
-    // console.log(projectData)
-  }, [projectData])
 
-
-  function progressUploadVideoNugget(progress, index){
-    console.log(progress*1 , index)
-  }
+  console.log(projectData)
 
   function render(){
       return  <div id="EditProject-view">
                 <div id="col-vid">
                   <div id="project-info">
                     <input className='nombre-proyecto' defaultValue={projectData ? projectData.name : 'Nuevo proyecto1'} onChange={ (e) => { cambiarNombreProject(e) } } />
-                    <button id="save-project" onClick={ () => { save_project() }}> {loading ? "GUARDANDO" : projectData ? "GUARDAR CAMBIOS" : "CREAR PROYECTO"}</button>
+                    <button id="save-project" onClick={save_project}> {loading ? "GUARDANDO" : projectData ? "GUARDAR CAMBIOS" : "CREAR PROYECTO"}</button>
                   </div>
                     <AddTag setProjectData={setProjectData} projectData={projectData} />
-                    <VideoEditor video_url={projectData?._id+'-'+projectData?.video_url} totalDuration={projectData.duration} getTotalDuration={getTotalDuration} saved={saved} newId={newId} saveLoader={saveLoader} setVideoURL={setVideoURL} getThumbURL={getThumbURL} activeNugget={ nuggets.filter(nugget => nugget.id == activeNugget) } recordTimings={recordTimings} setCorteInfo={setCorteInfo} parentCallback={handleCallback} />
+                    <VideoEditor projectData={projectData} video_url={projectData?._id+'-'+projectData?.video_url} getTotalDuration={getTotalDuration} saved={saved} newId={newId} saveLoader={saveLoader} setVideoURL={setVideoURL} getThumbURL={getThumbURL} activeNugget={ nuggets.filter(nugget => nugget.id == activeNugget) } recordTimings={recordTimings} setCorteInfo={setCorteInfo} parentCallback={handleCallback} />
                 </div>
                 
                 <div id="col-nuggets">
                   <ul id="nuggets-cont">
                         {nuggets.map((nugget, index)=>(
-                            <NuggetTab setRenderInfoNugget={setRenderInfoNugget} nuggets={nuggets} setNuggets={setNuggets} activeNugget={activeNugget} setActiveNugget={setActiveNugget} nugget={nugget} index={index} />
+                            <NuggetTab project_id={projectData._id} setRenderInfoNugget={setRenderInfoNugget} nuggets={nuggets} setNuggets={setNuggets} activeNugget={activeNugget} setActiveNugget={setActiveNugget} nugget={nugget} index={index} />
                         ))}
                   </ul>
                   <button onClick={ () => { nuevo_nugget() }} id="AddNugget">Agregar nugget</button>

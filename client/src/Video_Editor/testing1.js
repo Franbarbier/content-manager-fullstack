@@ -12,15 +12,15 @@ const Testing1 = ({ cortes, parentCallback, duration }) => {
 
   // const dispatch = useDispatch() 
 
-  useEffect( ()=>{
-    console.log(cortes)
-  })
-
   useEffect(()=>{
       setTotalDuration(duration)
   }, [])
 
-
+  useEffect( ()=>{
+    console.log(cortes)
+    console.log(newCortes)
+  
+  })
 
 
   function formatDecimals(num){
@@ -67,10 +67,10 @@ const Testing1 = ({ cortes, parentCallback, duration }) => {
                 <article>
                     <h2>Cortes nugget 1 (en segundos)</h2>
                     <ul>
-                    {cortes.map((corte, index)=>(
+                    {newCortes.map((corte, index)=>(
                         <>
                             <li className="cortes">
-                              <input type="name" className="corte-titulo" defaultValue={`Corte ${index+1}`} />
+                              <input type="name" className="corte-titulo" value={corte.titulo ? corte.titulo : `Corte ${index+1}`} />
                               {/* <div className='corte-progress' style={{ 'background-image': `linear-gradient(to right, var(--gris2) 0%, var(--gris2) ${pasarAPor(corte.start)}%, var(--violeta) ${pasarAPor(corte.start)} %, var(--violeta) ${pasarAPor(corte.start)},  var(--gris2) 71.989%,  var(--gris2) 100%);` }}> */}
                               <div className='corte-progress' style={{'background':`linear-gradient(90deg, var(--gris2) ${pasarAPor(corte.start)}%, var(--violeta) ${pasarAPor(corte.start)}%, var(--violeta) ${pasarAPor(corte.end)}%, var(--gris2) ${pasarAPor(corte.end)}%)`}}>
                               </div>
