@@ -201,7 +201,7 @@ const NewProject = () => {
   }, [nuggets])
 
   useEffect(()=>{
-    setProjectData( { ...projectData, name: "Nuevo proyecto"  } )
+    setProjectData( { ...projectData, name: "Nuevo proyecto", tags : [] } )
   }, [])
   useEffect(()=>{
     console.log(projectData)
