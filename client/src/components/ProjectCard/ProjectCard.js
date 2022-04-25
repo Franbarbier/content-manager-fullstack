@@ -106,7 +106,7 @@ function deleteThisProject(e) {
                 <div className='project-card'>
                     <div>
                         <div className="thumb">
-                            <img src={ project.thumb_url ? "https://content-creator-1.s3.sa-east-1.amazonaws.com/thumbs/"+project._id+"-"+project.thumb_url : "https://i.ytimg.com/vi/QAuJU5FUyC0/maxresdefault.jpg"}/>
+                            <img src={ project.thumb_url ? "https://content-creator-2.s3.sa-east-1.amazonaws.com/thumbs/"+project._id+"-"+project.thumb_url : "https://i.ytimg.com/vi/QAuJU5FUyC0/maxresdefault.jpg"}/>
                         </div>
                         <div>
                             <h3>{project.name}</h3>

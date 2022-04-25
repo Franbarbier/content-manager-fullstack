@@ -31,9 +31,14 @@ const App = () => {
                 <Route exact path="/new-project">
                     <NewProject setActiveTab={setActiveTab} />
                 </Route>
-                <Route exact path="/project/:id">
+                <Route path="/project/:id">
                     <EditProject setActiveTab={setActiveTab} />
                 </Route>
+            {/* <Route path="/cliente/:id">
+                    <MainLayout>
+                        <ApartadoCliente setActiveTab={setActiveTab} user={user} />
+                    </MainLayout>
+                </Route> */}
             </Switch>
             </AppProvider>
         </Router>

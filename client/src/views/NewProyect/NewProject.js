@@ -77,7 +77,7 @@ const NewProject = () => {
     }
   }
 
-  function saveLoader(estado, boolean,  ){
+  function saveLoader(estado, boolean, data ){
     if (boolean) {
       document.getElementById('save-project').classList.add("cargando");
       document.getElementById('save-project').innerHTML = "GUARDANDO";
@@ -87,6 +87,9 @@ const NewProject = () => {
     }
     if (estado == "success") {
       alert('Todo joya rrope')
+      console.log(data.split('-')[0])
+      window.location.href = "http://localhost:3000/project/"+data.split('-')[0];
+      // return false
     }
     if (estado == "error") {
       alert('Hubo un error al guardar el proyecto')
@@ -172,13 +175,14 @@ const NewProject = () => {
 
     dispatch(createProject(projectData)).then(
       (e)=> 
-      saved_project(e._id),
+        saved_project(e._id),
         alert('Se guardó correctamente el proyecto')
         
 
       ).catch( (e) =>{
         console.log('error:::', e.error)
         this.props.saveLoader("error",false)
+        // this.props.saveLoader("success",false)
 
     } )
 

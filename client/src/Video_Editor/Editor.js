@@ -15,7 +15,7 @@ class Editor extends React.Component {
         super(props);
         this.state = {
             isMuted: false,
-            timings: this.props.projectData?.nuggets[0].timings ? this.props.projectData?.nuggets[0].timings : [],
+            timings: this.props.projectData?.nuggets[0]?.timings ? this.props.projectData?.nuggets[0]?.timings : [],
             playing: false,
             currently_grabbed: {"index": 0, "type": "none"},
             difference: 0.2,
@@ -53,7 +53,7 @@ class Editor extends React.Component {
     componentDidMount = () => {
         
         if (this.props.projectData) {
-            this.setState({timings: this.props.projectData.nuggets[0].timings })
+            this.setState({timings: this.props.projectData.nuggets[0]?.timings })
         }
 
         
@@ -256,7 +256,7 @@ class Editor extends React.Component {
     renderGrabbers = () => {
 
 
-        return this.state.timings.map((x, index) => (
+        return this.state?.timings?.map((x, index) => (
             <div key={"grabber_"+index}>
                 <div className="grabber start" style={{left: `${x.start / this.playVideo.current?.duration * 100}%`}} onMouseDown={(event) => {
                     if(this.state.deletingGrabber){
@@ -529,7 +529,7 @@ class Editor extends React.Component {
                 <article>
                     <h2>Cortes</h2>
                     <ul>
-                    {this.state.timings.map((corte, index)=>(
+                    {this.state.timings?.map((corte, index)=>(
                         <li className="cortes" id={Math.floor(Math.random() * (0-500 + 1)) + 0}>
                               <input type="name" className="corte-titulo" onChange={ e => this.corteInfo(e, index, "titulo") }value={corte.titulo ? corte.titulo : 'Corte ' + index }  />
 

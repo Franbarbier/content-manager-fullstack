@@ -37,9 +37,11 @@ class VideoEditor extends React.Component {
 
     checkDefaultVid = () => {
 
+        console.log(this.props.video_url)
+        
         if(this.props.video_url){    
-
-            var urlAwsEndoded = "https://content-creator-1.s3.sa-east-1.amazonaws.com/videos/"+this.props.video_url.replaceAll( "+", "%2B" )
+            // https://storage.cloud.google.com/microcontent-creator/videos/6266a4a63afc3426532aeb0c-screen-capture%2B(2).mp4?authuser=2
+            var urlAwsEndoded = "https://storage.cloud.google.com/microcontent-creator/videos/"+this.props.video_url.replaceAll( "+", "%2B" )
             urlAwsEndoded = urlAwsEndoded.replace(/\s+/g,'+')
             loadDoc(urlAwsEndoded , myFunction1, this);
             // loadDoc('https://microcontent-creator.s3.sa-east-1.amazonaws.com/videos/6255e7bc4da9401cf61250c9-screen-capture%2B(2).mp4', myFunction1, this);
@@ -216,11 +218,14 @@ class VideoEditor extends React.Component {
 
                 } )
                 .then((e)=>{
-                    this.props.saveLoader("success",false, data)
+                    console.log('200:::', e)
+                    this.props.saveLoader("success",false, e.data)
                 })
                 .catch( (e) =>{
                     console.log('error:::', e)
-                    this.props.saveLoader("error",false)
+                    // this.props.saveLoader("error",false)
+                    this.props.saveLoader("error",false, data)
+
 
                 } )
 

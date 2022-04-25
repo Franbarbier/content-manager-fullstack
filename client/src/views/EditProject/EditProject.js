@@ -19,22 +19,34 @@ import { serverEndpoint } from '../../globals';
 
 
 const EditProject = () => {
-  
-  const { id } = useParams();
-  const projects = useSelector(state => state?.projects)
-  const project = projects.filter((proyecto)=>proyecto._id === id)[0]
-
-  const [projectData, setProjectData] = useState(project && project)
+ 
   const [saved, setSaved] = useState(0)
   const [newId, setNewId] = useState(0)
   const [loading, setLoading] = useState(false)
-  const [nuggets, setNuggets] = useState(project ? project.nuggets : [])
   const [nuggetCounter, setNuggetCounter] = useState(1)
   const [activeNugget, setActiveNugget] = useState(1)
   const [renderInfoNugget, setRenderInfoNugget] = useState(false)
   const [progress, setProgress] = useState()
+  
+  // console.log(useParams().id)
+  const { id } = useParams();
+  
+  const projects = useSelector(state => state?.projects)
+  const project = projects.filter((proyecto)=>proyecto._id === id)[0]
 
+  const [nuggets, setNuggets] = useState(project ? project.nuggets : [])
+  const [projectData, setProjectData] = useState(project)
+  
   const [timings, setTimings] = useState()
+
+  // console.log(project, projectData)
+  // console.log(projectData?._id + projectData?.video_url)
+
+  console.log(projectData, project)
+  useEffect(()=>{
+    setProjectData(project)
+    // setNuggets(project.nuggets)
+  },[project])
   
   const dispatch = useDispatch()
 
@@ -197,17 +209,17 @@ const EditProject = () => {
   }, [nuggets])
 
 
-  console.log(projectData)
-
   function render(){
       return  <div id="EditProject-view">
                 <div id="col-vid">
                   <div id="project-info">
-                    <input className='nombre-proyecto' defaultValue={projectData ? projectData.name : 'Nuevo proyecto1'} onChange={ (e) => { cambiarNombreProject(e) } } />
+                    <input className='nombre-proyecto' defaultValue={projectData ? projectData.name : 'Selecciona algún proyecto'} onChange={ (e) => { cambiarNombreProject(e) } } />
                     <button id="save-project" onClick={save_project}> {loading ? "GUARDANDO" : projectData ? "GUARDAR CAMBIOS" : "CREAR PROYECTO"}</button>
                   </div>
                     <AddTag setProjectData={setProjectData} projectData={projectData} />
-                    <VideoEditor projectData={projectData} video_url={projectData?._id+'-'+projectData?.video_url} getTotalDuration={getTotalDuration} saved={saved} newId={newId} saveLoader={saveLoader} setVideoURL={setVideoURL} getThumbURL={getThumbURL} activeNugget={ nuggets.filter(nugget => nugget.id == activeNugget) } recordTimings={recordTimings} setCorteInfo={setCorteInfo} parentCallback={handleCallback} />
+                    {console.log(projectData)}
+                    {/* <VideoEditor projectData={projectData} video_url={projectData?._id+'-'+projectData?.video_url} getTotalDuration={getTotalDuration} saved={saved} newId={newId} saveLoader={saveLoader} setVideoURL={setVideoURL} getThumbURL={getThumbURL} activeNugget={ nuggets.filter(nugget => nugget.id == activeNugget) } recordTimings={recordTimings} setCorteInfo={setCorteInfo} parentCallback={handleCallback} /> */}
+                    
                 </div>
                 
                 <div id="col-nuggets">
@@ -223,7 +235,7 @@ const EditProject = () => {
                 }
               </div>
 
-       }
+  }
        
        
        return ( render() )

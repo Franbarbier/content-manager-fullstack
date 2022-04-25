@@ -13,7 +13,8 @@ const [estadoNugget, setEstadoNugget] = useState(nugget.estado)
 const [videoFileNugg, setVideoFileNugg] = useState()
 const [progressUpload, setProgressUpload] = useState()
 const [videoNugget, setVideoNugget] = useState({
-       estado : "No elegido"
+       estado :  nugget.video_name ? "elegido" : "No elegido",
+       nombre : nugget.video_name
 })
 
 
@@ -103,6 +104,7 @@ function selectFileNugget(e){
 
        var newNuggets = nuggets
        newNuggets[newNuggets.indexOf(nugget)].video = e.target.files[0]
+       newNuggets[newNuggets.indexOf(nugget)].video_name = e.target.files[0].name
        newNuggets[newNuggets.indexOf(nugget)].estado = 2
        setEstadoNugget(2)
        
@@ -164,6 +166,7 @@ useEffect(()=>{
 }, [videoFileNugg] )
 
 
+
   function render(){
       return <li className={nugget.id == activeNugget && 'nuggetSelected'} onClick={ (e) => { checkDeleted(e, nugget.id) } } >
                      <div id="nugget-titulo">
@@ -185,21 +188,15 @@ useEffect(()=>{
                                                  
                                                  <span>{ videoNugget.estado == "elegido" ? videoNugget.nombre : "No hay video subido" }</span>
                                           </div>
-                                          {/* { videoNugget.estado == "elegido" && <button className="upload-video-nugget" onClick={ (e) => { uploadVideoNugget(e, index) } } >SUBIR</button> } */}
+
                                           { videoNugget.estado == "elegido" &&
                                                  <div className='video-options'>
-                                                        <div><a href={'https://content-creator-1.s3.sa-east-1.amazonaws.com/videos/nugget' + nugget.id + "-"+project_id +'-'+ videoFileNugg?.name.replaceAll( "+", "%2B" ).replace(/\s+/g,'+')}><img src="/assets/download.png" title="Descargar"/></a></div>
-                                                        <div><img src="/assets/pencil.png" onClick={ document.getElementById(`addVid${nugget.id}`).click } title="Editar"/></div>
+                                                        <div><a href={'https://content-creator-2.s3.sa-east-1.amazonaws.com/videos/nugget' + nugget.id + "-"+project_id +'-'+ videoNugget.nombre.replaceAll( "+", "%2B" ).replace(/\s+/g,'+')}><img src="/assets/download.png" title="Descargar"/></a></div>
+                                                        <div><img src="/assets/pencil.png" onClick={ document.getElementById(`addVid${nugget.id}`)?.click } title="Editar"/></div>
                                                         <div><img src="/assets/delete.png" onClick={ (e)=>{deleteNuggetVideo(e, 'videos/')} } title="Eliminar"/></div>
                                                  </div>
                                           }
-                                          {/* { videoNugget.estado == "elegido" && <button className="edit-video-nugget">EDITAR</button> } */}
-                                          {/* { videoNugget.estado == "subido" && 
-                                                 <div className='btns-cont'>
-                                                        <button className="delete-video-nugget"><img width='18px' src="/assets/delete.png"/></button>
-                                                        <button className="download-video-nugget"><img width='18px' src="/assets/download.png"/></button>
-                                                 </div>
-                                          } */}
+                                          
                                           <div id="progress-bar" style={{ 'width': `${videoNugget.progress}%` }} ></div>
                                          
                                    </label>
