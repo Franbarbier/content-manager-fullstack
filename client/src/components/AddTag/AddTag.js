@@ -7,14 +7,18 @@ import './AddTag.css';
 
 const AddTag = ({setProjectData, projectData}) => {
 
+
     const [ tagValue, setTagValue] = useState()
-    const [ tagList, setTagList] = useState(projectData?.tags ? projectData.tags : [] )
-
-
+    const [ tagList, setTagList] = useState([])
+    
+    
     useEffect( ()=>{
         setProjectData( { ...projectData, tags: tagList  } )
+        console.log(tagList)
     }, [tagList] )
+        
 
+        
     function checkIfEnter(e) {
         if (e.keyCode == 13) {            
             if (tagValue.replace(/\s/g, "") !== "") {
@@ -34,9 +38,10 @@ const AddTag = ({setProjectData, projectData}) => {
                     <input type="text" onChange={ (e)=>{ setTagValue(e.target.value) } } onKeyDown={ (e) => { checkIfEnter(e) } } id="newTag" />
                     <ul id="tagList">
                         {/* <!-- All TagList Here! --> */}
-                        {tagList.map((tag, index)=>(
+                        {projectData?.tags.map((tag, index)=>(
                                 <li>{tag}<span onClick={ (e)=>{ deleteTag(e) } } class="rmTag">&times;</span></li>
                         ))}
+                        {console.log(tagList)}
                     </ul>  
                 </div>
              </>
