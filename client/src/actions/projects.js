@@ -24,10 +24,15 @@ export const createProject = (project) => async (dispatch) => {
     }
 
 }
+// function deleteFilesFromGC(id) {
+    // let deleted_object = directory+'nugget' + nugget.id + "-"+project_id +'-'+ videoFileNugg?.name
+    // axios.post(serverEndpoint+'delete-video', {deleted_object} )
+// }
 
 export const deleteProject = async (id_project, dispatch) => {
     try{
         const {data} = await api.deleteProject(id_project)
+        // deleteFilesFromGC(id_project)
         console.log(data)
         dispatch({type: DELETE_PROJECT, payload:data})
     }catch(error){
@@ -37,7 +42,8 @@ export const deleteProject = async (id_project, dispatch) => {
 export const editProject = async (projectData, dispatch) => {
     try{
         const {data} = await api.editProject(projectData)
-        dispatch({type: EDIT_PROJECT, payload:data})
+        // dispatch({type: EDIT_PROJECT, payload:data})
+        return projectData
     }catch(error){
         console.log(error)
     }

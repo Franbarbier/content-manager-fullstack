@@ -13,11 +13,15 @@ import './NewProject.css';
 import NuggetTab from '../../components/NuggetTab/NuggetTab';
 import AddTag from '../../components/AddTag/AddTag';
 import { serverEndpoint } from '../../globals';
+import Menu from '../../components/Menu/Menu';
 
 
 const NewProject = () => {
 
-  const [projectData, setProjectData] = useState()
+  const [projectData, setProjectData] = useState({
+    nuggets :[],
+    tags: []
+  })
   const [saved, setSaved] = useState(0)
   const [newId, setNewId] = useState(0)
   const [loading, setLoading] = useState(false)
@@ -77,6 +81,16 @@ const NewProject = () => {
     }
   }
 
+  function setLoadingProccess(prog){
+    if (prog.toFixed(0) < 85 ) {
+      setProgress( prog.toFixed(0) )
+    } 
+  }
+
+  useEffect(()=>{
+    console.log("El progreso: "+progress*1)
+  },[progress])
+
   function saveLoader(estado, boolean, data ){
     if (boolean) {
       document.getElementById('save-project').classList.add("cargando");
@@ -87,9 +101,9 @@ const NewProject = () => {
     }
     if (estado == "success") {
       alert('Todo joya rrope')
+      setProgress(100)
       console.log(data.split('-')[0])
       window.location.href = "http://localhost:3000/project/"+data.split('-')[0];
-      // return false
     }
     if (estado == "error") {
       alert('Hubo un error al guardar el proyecto')
@@ -125,31 +139,28 @@ const NewProject = () => {
 
     for (let index = 0; index < projectData.nuggets.length; index++) {
       const element = projectData.nuggets[index];
+      
       if (element.video) {
-        
-        let file = element.video
-        const data = new FormData()
-        let new_name = 'nugget' + element.id + "-" + project_id + '-' + file.name
-        data.append('new_name',new_name)
-        console.log( data.get("new_name") )
-        data.append( 'file', file )
+          let file = element.video
+          const data = new FormData()
+          var new_name = 'nugget' + element.id + "-"+project_id +'-'+ file?.name
+          data.append('new_name',new_name)
+          data.append( 'file', file )
+          
 
-        axios.post(serverEndpoint+'upload-video-nugget', data, { 
-                    
-            onUploadProgress: (progressEvent) => {
-                const progressNugg = ( (progressEvent.loaded / progressEvent.total) * 100 ).toFixed();
-                // setProgress(progress);
-                // console.log(progressNugg)
-            }
+          axios.post(serverEndpoint+'upload-video', data, { 
+                      
+              onUploadProgress: (progressEvent) => {
+                  const progressNugg = ( (progressEvent.loaded / progressEvent.total) * 100 ).toFixed();
+              }
 
-        } )
-        .then((e)=>{
-          console.log('el nugget video subido', e)
-          return true
-        })
-        .catch( (e) =>{
-            console.log('error:::', e.error)
-        } )
+          } )
+          .then((e)=>{
+            console.log('el nugget video subido', e)
+          })
+          .catch( (e) =>{
+              console.log('error:::', e.error)
+          } )
 
         
       }
@@ -159,7 +170,7 @@ const NewProject = () => {
 
   async function saved_project(id){
 
-    const onSuccess = () => {return <Redirect to="/"/> }
+    const onSuccess = () => {console.log('en teoria aca')}
     await uploadVideosNuggets(id) 
     onSuccess()
     
@@ -171,12 +182,17 @@ const NewProject = () => {
 
   function save_project(){
 
+    if (!projectData.thumb_url) {
+      alert("Elige un thumbnail del proyecto")
+      return false
+    }
     setLoading(true)
-
+    setProgress(0)
     dispatch(createProject(projectData)).then(
       (e)=> 
-        saved_project(e._id),
-        alert('Se guardó correctamente el proyecto')
+        saved_project(e._id).then(
+          alert('Se guardó correctamente el proyecto')
+        )
         
 
       ).catch( (e) =>{
@@ -211,14 +227,16 @@ const NewProject = () => {
   function render(){
       return  <div id="NewProject-view">
                 <div id="col-vid">
+                  <div className="progressBar" style={{'width': progress + "%" }}></div>
                   <div id="project-info">
                     <input className='nombre-proyecto' defaultValue='Nuevo proyecto' onChange={ (e) => { cambiarNombreProject(e) } } />
                     <button id="save-project" onClick={ () => { save_project() }}> {loading ? "GUARDANDO" : "CREAR PROYECTO"}</button>
                   </div>
                     <AddTag setProjectData={setProjectData} projectData={projectData} />
-                    <VideoEditor getTotalDuration={getTotalDuration} saved={saved} newId={newId} saveLoader={saveLoader} setVideoURL={setVideoURL} getThumbURL={getThumbURL} activeNugget={ nuggets.filter(nugget => nugget.id == activeNugget) } recordTimings={recordTimings} setCorteInfo={setCorteInfo} parentCallback={handleCallback} />
+                    <VideoEditor getTotalDuration={getTotalDuration} saved={saved} setLoadingProccess={setLoadingProccess} newId={newId} saveLoader={saveLoader} setVideoURL={setVideoURL} getThumbURL={getThumbURL} activeNugget={ nuggets.filter(nugget => nugget.id == activeNugget) } recordTimings={recordTimings} setCorteInfo={setCorteInfo} parentCallback={handleCallback} />
                 </div>
                 <div id="col-nuggets">
+                  <Menu />
                   <ul id="nuggets-cont">
                         {nuggets.map((nugget, index)=>(
                             <NuggetTab setRenderInfoNugget={setRenderInfoNugget} nuggets={nuggets} setNuggets={setNuggets} activeNugget={activeNugget} setActiveNugget={setActiveNugget} nugget={nugget} index={index} />

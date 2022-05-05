@@ -9,14 +9,18 @@ const AddTag = ({setProjectData, projectData}) => {
 
 
     const [ tagValue, setTagValue] = useState()
-    const [ tagList, setTagList] = useState([])
+    const [ tagList, setTagList] = useState(projectData?.tags)
     
     
     useEffect( ()=>{
         setProjectData( { ...projectData, tags: tagList  } )
         console.log(tagList)
     }, [tagList] )
+    
+    useEffect( ()=>{
+        setTagList( projectData?.tags )
         
+    }, [] )
 
         
     function checkIfEnter(e) {

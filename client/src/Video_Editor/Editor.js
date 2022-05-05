@@ -132,14 +132,16 @@ class Editor extends React.Component {
     }
 
     captureSnapshot = () => {
+
         var video = this.playVideo.current
+        video.setAttribute('crossorigin', 'anonymous')
+        video.origin = 'anonymus'
         const canvas = document.createElement("canvas");
         // scale the canvas accordingly
         canvas.width = video.videoWidth;
         canvas.height = video.videoHeight;
         // draw the video at that frame
-        canvas.getContext('2d')
-        .drawImage(video, 0, 0, canvas.width, canvas.height);
+        canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
         // convert it to a usable data URL
         const dataURL = canvas.toDataURL();
         this.setState({imageUrl: dataURL})
@@ -483,9 +485,10 @@ class Editor extends React.Component {
             <div id="wrapper-cont" >
 
             <div className="wrapper">
+               
                 <video className="video" autoload="metadata" muted={this.state.isMuted} ref={this.playVideo} controls onClick={this.play_pause.bind(this)} >
                     <source src={this.props.videoUrl} type="video/mp4" />
-                </video>      
+                </video>
 
                 <div className="playback">
                     {this.renderGrabbers()}
@@ -497,7 +500,9 @@ class Editor extends React.Component {
                     <div className="player-controls">
                         {/* <button className="settings-control" title="Reset Video" onClick={this.reset}><FontAwesomeIcon icon={faSync} /></button> */}
                         <button className="settings-control" title="Mute/Unmute Video" onClick={() => this.setState({isMuted: !this.state.isMuted})}>{this.state.isMuted ? <FontAwesomeIcon icon={faVolumeMute} /> : <FontAwesomeIcon icon={faVolumeUp} />}</button>
-                        <button className="settings-control" title="Capture Thumbnail" onClick={this.captureSnapshot}><FontAwesomeIcon icon={faCamera} /></button>
+                        {window.location.toString().includes("new-project") &&
+                        <button className="settings-control" style={{'width':'fit-content'}} title="Capture Thumbnail" onClick={this.captureSnapshot}>Elegir thumbnail  <FontAwesomeIcon icon={faCamera} /></button>
+                        }
                     </div>
                     <div className="player-controls">
                         <button className="seek-start" title="Skip to previous clip" onClick={this.skipPrevious}><FontAwesomeIcon icon={faStepBackward} /></button>

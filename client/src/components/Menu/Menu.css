@@ -1,0 +1,54 @@
+#Menu-component{
+    display: flex;
+    justify-content: right;
+    align-items: center;
+}
+#Menu-component>div{
+    cursor: pointer;
+    height: 32px;
+    width: 32px;
+}
+
+#ver-mas{
+    margin-right: 20px;
+    position: relative;
+    background: rgb(235, 235, 235);
+    transition: .2s;
+    opacity: 0.8;
+    border-radius: 50px;
+}
+#ver-mas:hover{
+    opacity: 1;
+
+}
+#ver-mas img{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    height: 50%;
+    transform: translate(-50%, -50%) rotate(90deg);
+}
+
+#delete-btn {
+    position: absolute;
+    top: 0%;
+    right: 0%;
+    width: fit-content;
+    white-space: nowrap;
+    padding: 6px 8px;
+    border-radius: 5px;
+    background: #f0f0f0;
+    border: 1px solid #ddd;
+    color: #272727;
+    cursor: pointer;
+    transition: .2s;
+    margin-top: 25%;
+    opacity: 0;
+}
+.ajoba{
+    transition: .2s;
+    transition-delay: .2s;
+    opacity: 1!important;
+    transform: translateY(0%)!important
+
+}

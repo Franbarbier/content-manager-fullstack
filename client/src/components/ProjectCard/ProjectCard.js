@@ -48,18 +48,29 @@ useEffect(()=>{
 
     // Set % asginado
     var porcentajeAsig = totalDuration * 100 / project.duration
+
     if (porcentajeAsig > 100) { porcentajeAsig = 100 }
-    setPorAsignado( Math.round(porcentajeAsig) )
+    if (!isNaN(porcentajeAsig)) {
+        setPorAsignado( Math.round(porcentajeAsig) )
+    }else{
+        setPorAsignado( 0 )
+    }
 
     // Set % Editado
     var porcentajeEdit = totalEdita2 * 100 / project.nuggets.length
-    setPorEditado( Math.round(porcentajeEdit) )
+    if (!isNaN(porcentajeEdit)) {
+        setPorEditado( Math.round(porcentajeEdit) )
+    }else{
+        setPorEditado( 0 )
+    }
 
     // Set % Publicado
     var porcentajePublic = totalPublica2 * 100 / project.nuggets.length
-    setPorPublicado( Math.round(porcentajePublic) )
-
-
+    if (!isNaN(porcentajePublic)) {
+        setPorPublicado( Math.round(porcentajePublic) )
+    }else{
+        setPorPublicado( 0 )
+    }
 
 
 
@@ -70,24 +81,26 @@ function deleteThisProject(e) {
     e.preventDefault()
     if (window.confirm("Eliminar este proyecto de forma permanente?")) {
             // setLoading(true)
-            dispatch(deleteProject(project._id, dispatch )).then(
+            deleteProject(project._id, dispatch ).then(
               (e)=> 
             
                 alert('Se eliminó correctamente'),
 
                 // check and delete video, thumb y video nuggets
                 function deleteAllMedia() {
-                    var video_key = 'videos/' +project._id+'-'+project.video_url
-                    axios.post(serverEndpoint+'delete-item', {video_key} )
-
+                    var item = 'videos/' +project._id+'-'+project.video_url
+                    axios.post(serverEndpoint+'delete-item', {item} )
                     if(project.thumb_url){
-                        var thumb_key = 'thumbs/' +project._id+'-project-thumb.png'
-                        axios.post(serverEndpoint+'delete-item', {video_key:thumb_key} )
+                        item = 'thumbs/' +project._id+'-project-thumb.png'
+                        axios.post(serverEndpoint+'delete-item', {item} )
                     }
+
                     for (let index = 0; index < project.nuggets.length; index++) {
                         const element = project.nuggets[index];
-                        var nuggVid_key = 'videos/nugget' + element.id + "-"+project._id +'-'+ element.video?.name
-                        axios.post(serverEndpoint+'delete-item', {video_key:nuggVid_key} )
+                        if (element.video_name) {
+                            item = 'videos/nugget' + element.id + "-"+project._id +'-'+ element.video_name
+                            axios.post(serverEndpoint+'delete-item', {item} )
+                        }
                         
                     }
                 }()
@@ -106,7 +119,7 @@ function deleteThisProject(e) {
                 <div className='project-card'>
                     <div>
                         <div className="thumb">
-                            <img src={ project.thumb_url ? "https://content-creator-2.s3.sa-east-1.amazonaws.com/thumbs/"+project._id+"-"+project.thumb_url : "https://i.ytimg.com/vi/QAuJU5FUyC0/maxresdefault.jpg"}/>
+                            <img src={ project.thumb_url ? "https://storage.cloud.google.com/microcontent-creator/thumbs/"+project._id+"-"+project.thumb_url : "https://i.ytimg.com/vi/QAuJU5FUyC0/maxresdefault.jpg"}/>
                         </div>
                         <div>
                             <h3>{project.name}</h3>

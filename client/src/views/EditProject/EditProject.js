@@ -16,6 +16,7 @@ import './EditProject.css';
 import NuggetTab from '../../components/NuggetTab/NuggetTab';
 import AddTag from '../../components/AddTag/AddTag';
 import { serverEndpoint } from '../../globals';
+import Menu from '../../components/Menu/Menu';
 
 
 const EditProject = () => {
@@ -42,6 +43,9 @@ const EditProject = () => {
   useEffect(()=> {
     setProjectData(project)
   }, [project])
+  useEffect(()=> {
+    console.log(projectData)
+  }, [projectData])
   
   
   const dispatch = useDispatch()
@@ -49,11 +53,13 @@ const EditProject = () => {
   function nuevo_nugget() {
 
     var newNugget = {};
-    newNugget.id = nuggets[nuggets.length - 1].id + 1
+    newNugget.id = projectData.nuggets[projectData.nuggets.length - 1].id + 1
     newNugget.nombre = 'Nombre del nugget'
     newNugget.timings = []
     newNugget.estado = 0
-    setNuggets(nuggets => [...nuggets, newNugget])
+
+    setNuggets(nuggets => [...projectData.nuggets, newNugget])
+
     setNuggetCounter(newNugget.id)
     setActiveNugget(nuggetCounter)
   }
@@ -140,30 +146,28 @@ const EditProject = () => {
 
     for (let index = 0; index < projectData.nuggets.length; index++) {
       const element = projectData.nuggets[index];
+      console.log(element)
       if (element.video) {
-        
-        let file = element.video
-        const data = new FormData()
-        let new_name = 'nugget' + element.id + "-" + project_id + '-' + file.name
-        data.append('new_name',new_name)
-        console.log( data.get("new_name") )
-        data.append( 'file', file )
+          let file = element.video
+          const data = new FormData()
+          var new_name = 'nugget' + element.id + "-"+project_id +'-'+ file?.name
+          data.append('new_name',new_name)
+          data.append( 'file', file )
+          
 
-        axios.post(serverEndpoint+'upload-video-nugget', data, { 
-                    
-            onUploadProgress: (progressEvent) => {
-                const progressNugg = ( (progressEvent.loaded / progressEvent.total) * 100 ).toFixed();
-                // setProgress(progress);
-                // console.log(progressNugg)
-            }
+          axios.post(serverEndpoint+'upload-video', data, { 
+                      
+              onUploadProgress: (progressEvent) => {
+                  const progressNugg = ( (progressEvent.loaded / progressEvent.total) * 100 ).toFixed();
+              }
 
-        } )
-        .then((e)=>{
-          console.log('el nugget video subido', e)
-        })
-        .catch( (e) =>{
-            console.log('error:::', e.error)
-        } )
+          } )
+          .then((e)=>{
+            console.log('el nugget video subido', e)
+          })
+          .catch( (e) =>{
+              console.log('error:::', e.error)
+          } )
 
         
       }
@@ -175,20 +179,24 @@ const EditProject = () => {
     uploadVideosNuggets(id)  
     setNewId(id)
     setTimeout(() => {
-      setSaved(saved + 1)
+      setSaved(saved)
     }, 350);
   }
 
   function save_project(){
 
-    console.log('qw')
     setLoading(true)
 
     editProject(projectData, dispatch).then(
       (e)=> 
+        saved_project(id),
         alert('Se guardó correctamente el proyecto'),
         setLoading(false)
-
+        // async ()=>{
+        //   const onSuccess = () => {alert('Se guardó correctamente el proyecto')}
+        //   await saved_project(id) 
+        //   onSuccess()
+        // },
 
       ).catch( (e) =>{
         console.log('error:::', e.error)
@@ -209,19 +217,22 @@ const EditProject = () => {
       return  <div id="EditProject-view">
                 <div id="col-vid">
                   <div id="project-info">
-                    <input className='nombre-proyecto' defaultValue={projectData ? projectData.name : 'Selecciona algún proyecto'} onChange={ (e) => { cambiarNombreProject(e) } } />
+                    <input className='nombre-proyecto' defaultValue={projectData?.name} onChange={ (e) => { cambiarNombreProject(e) } } />
                     <button id="save-project" onClick={save_project}> {loading ? "GUARDANDO" : projectData ? "GUARDAR CAMBIOS" : "CREAR PROYECTO"}</button>
                   </div>
-                    <AddTag setProjectData={setProjectData} projectData={projectData} prevTags={tags} />
-                    {/* <VideoEditor projectData={projectData} video_url={projectData?._id+'-'+projectData?.video_url} getTotalDuration={getTotalDuration} saved={saved} newId={newId} saveLoader={saveLoader} setVideoURL={setVideoURL} getThumbURL={getThumbURL} activeNugget={ nuggets.filter(nugget => nugget.id == activeNugget) } recordTimings={recordTimings} setCorteInfo={setCorteInfo} parentCallback={handleCallback} /> */}
-                    
+                    {Array.isArray(projectData?.tags) &&
+                      <AddTag setProjectData={setProjectData} projectData={projectData} prevTags={tags} />
+                    }
+                    <VideoEditor projectData={projectData} video_url={projectData?._id+'-'+projectData?.video_url} getTotalDuration={getTotalDuration} saved={saved} newId={newId} saveLoader={saveLoader} setVideoURL={setVideoURL} getThumbURL={getThumbURL} activeNugget={ nuggets.filter(nugget => nugget.id == activeNugget) } recordTimings={recordTimings} setCorteInfo={setCorteInfo} parentCallback={handleCallback} />                    
                 </div>
                 
                 <div id="col-nuggets">
+                  <Menu id={id} projectData={projectData}/>
+
                   <ul id="nuggets-cont">
                       {projectData?.nuggets.length > 0 &&
                         projectData.nuggets.map((nugget, index)=>(
-                            <NuggetTab project_id={projectData._id} setRenderInfoNugget={setRenderInfoNugget} nuggets={nuggets} setNuggets={setNuggets} activeNugget={activeNugget} setActiveNugget={setActiveNugget} nugget={nugget} index={index} />
+                            <NuggetTab project_id={projectData._id} setRenderInfoNugget={setRenderInfoNugget} nuggets={projectData?.nuggets} setNuggets={setNuggets} activeNugget={activeNugget} setActiveNugget={setActiveNugget} nugget={nugget} index={index} />
                         ))
                       }
                   </ul>

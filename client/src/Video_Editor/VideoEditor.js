@@ -31,7 +31,6 @@ class VideoEditor extends React.Component {
             e.stopPropagation();
           });
 
-          this.checkDefaultVid()
 
     }
 
@@ -39,37 +38,49 @@ class VideoEditor extends React.Component {
 
         console.log(this.props.video_url)
         
-        if(this.props.video_url){    
+        if( this.props.video_url && this.props.video_url.includes('.') ){
             // https://storage.cloud.google.com/microcontent-creator/videos/6266a4a63afc3426532aeb0c-screen-capture%2B(2).mp4?authuser=2
-            var urlAwsEndoded = "https://storage.cloud.google.com/microcontent-creator/videos/"+this.props.video_url.replaceAll( "+", "%2B" )
-            urlAwsEndoded = urlAwsEndoded.replace(/\s+/g,'+')
-            loadDoc(urlAwsEndoded , myFunction1, this);
-            // loadDoc('https://microcontent-creator.s3.sa-east-1.amazonaws.com/videos/6255e7bc4da9401cf61250c9-screen-capture%2B(2).mp4', myFunction1, this);
+            var urlGcEncoded = "https://storage.cloud.google.com/microcontent-creator/videos/"+this.props.video_url.replaceAll( "+", "%2B" )
+            urlGcEncoded = urlGcEncoded.replace(/\s+/g,'%20')
+            console.log(urlGcEncoded)
+            this.setState({
+                        isUpload: false,
+                        videoUrl: urlGcEncoded,
+                       })
 
-            function loadDoc(url, cFunction, este) {
-                fetch(url)
-            .then(res => res.blob() ) // Gets the response and returns it as a blob -> "https://microcontent-creator.s3.sa-east-1.amazonaws.com/videos/"+this.props.video_url.replace(/\s+/g,'+')
+
+            // loadDoc(urlAwsEndoded , myFunction1, this);
+            // // loadDoc('https://microcontent-creator.s3.sa-east-1.amazonaws.com/videos/6255e7bc4da9401cf61250c9-screen-capture%2B(2).mp4', myFunction1, this);
+
+            // function loadDoc(url, cFunction, este) {
+            //     // fetch(url)
+            //     fetch(url, { 
+            //         mode: 'no-cors'
+            //     })
+            // .then(res => res.blob() ) // Gets the response and returns it as a blob -> "https://microcontent-creator.s3.sa-east-1.amazonaws.com/videos/"+this.props.video_url.replace(/\s+/g,'+')
             
-            .then( blob => { 
-                cFunction(URL.createObjectURL(blob), este)
-                // Here's where you get access to the blob
-                // And you can use it for whatever you want
-                // Like calling ref().put(blob)
-                // Here, I use it to make an image appear on the page
-            });
+            // .then( blob => {
+            //     cFunction(URL.createObjectURL(blob), este)
+            //     // Here's where you get access to the blob
+            //     // And you can use it for whatever you want
+            //     // Like calling ref().put(blob)
+            //     // Here, I use it to make an image appear on the page
+            // });
 
             
+            // }
+            // function myFunction1(blob,este) {
+            //     este.setState({
+            //         isUpload: false,
+            //         videoUrl: urlAwsEndoded,
+            //        })
+
+            //     }
             }
-            function myFunction1(blob,este) {
-                este.setState({
-                    isUpload: false,
-                    videoUrl: blob,
-                   })
-            } 
         }
-    }
-
-    render_uploader = () => {
+        
+        render_uploader = () => {
+            this.checkDefaultVid()
                 
         return(
             <>
@@ -208,12 +219,14 @@ class VideoEditor extends React.Component {
 
                 console.log(file)
                 data.append( 'file', file )
+
+                var este = this
                  
                 axios.post(serverEndpoint+'upload-video', data, {
-                    
                     onUploadProgress: (progressEvent) => {
                         const progress = ( (progressEvent.loaded / progressEvent.total) * 100 ).toFixed();
-                        // setProgress(progress);
+                        console.log( (progressEvent.loaded / progressEvent.total )* 100)
+                        this.props.setLoadingProccess((progressEvent.loaded / progressEvent.total) * 100)
                     }
 
                 } )
@@ -230,27 +243,26 @@ class VideoEditor extends React.Component {
                 } )
 
                 var thumb = document.getElementsByClassName('thumbnail')[0]
-
                 if (thumb) {
                     let thumb_url = thumb.src
-
-                        function urltoFile(url, filename, mimeType){
-                            mimeType = mimeType || (url.match(/^data:([^;]+);/)||'')[1];
-                            return (fetch(url)
-                                .then(function(res){return res.arrayBuffer();})
-                                .then(function(buf){return new File([buf], filename, {type:mimeType});})
-                            );
-                        }
-
-                        urltoFile(thumb_url, this.props.newId + '-project-thumb.png')
-                        .then(function(file){
+                    
+                    function urltoFile(url, filename, mimeType){
+                        mimeType = mimeType || (url.match(/^data:([^;]+);/)||'')[1];
+                        return (fetch(url)
+                        .then(function(res){return res.arrayBuffer();})
+                        .then(function(buf){return new File([buf], filename, {type:mimeType});})
+                        );
+                    }
+                    
+                    urltoFile(thumb_url, this.props.newId + '-project-thumb.png')
+                    .then(function(file){
+                            console.log(file)
 
                             const data = new FormData()
                 
                             var retDataThumb = new FormData()
 
                             retDataThumb.append( 'file', file )
-
                             console.log(retDataThumb.get('file'));
                             
                             axios.post(serverEndpoint+'upload-thumb', retDataThumb)

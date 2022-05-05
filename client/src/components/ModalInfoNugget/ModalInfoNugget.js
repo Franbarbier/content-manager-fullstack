@@ -54,7 +54,7 @@ function getValueTime(value)  {
 
                                                         <b>[ {getValueTime(timing.start)} - {getValueTime(timing.end)} ]</b>
                                                         <br />
-                                                        <p><i>"{timing.descr}"</i></p>
+                                                        <p><i>"{timing.descripcion}"</i></p>
                                                  </li>
                                           ))}
                                           </ul>

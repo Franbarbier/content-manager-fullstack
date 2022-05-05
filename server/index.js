@@ -38,8 +38,8 @@ const multerVar = new multer({
     storage: multer.memoryStorage(),
   });
   
-  // A bucket is a container for objects (files).
-//   const bucket = storage.bucket(process.env.GCLOUD_STORAGE_BUCKET);
+// A bucket is a container for objects (files).
+// const bucket = storage.bucket(process.env.GCLOUD_STORAGE_BUCKET);
   
   // Display a form for uploading files.
   app.get('/', (req, res) => {
@@ -75,11 +75,79 @@ const multerVar = new multer({
     blobStream.end(req.file.buffer);
     res.status(200);
   });
+
+  app.post('/upload-thumb', multerVar.single('file'), (req, res, next) => {
+    if (!req.file) {
+      res.status(400).send('No file uploaded.');
+      return;
+    }
+    // req.file.originalname = req.body.new_name
+    // Create a new blob in the bucket and upload the file data.
+    const blob = googleBucket.file('thumbs/'+req.file.originalname);
+    const blobStream = blob.createWriteStream();
+    // console.log(blobStream)
+    console.log('thumbs/'+req.file.originalname )
   
-// app.post('/upload-video', function (req, res) {
-//     req.file.originalname = req.body.new_name
-//     res.send(req.file);
+    blobStream.on('error', err => {
+      next(err);
+    });
+  
+    blobStream.on('finish', () => {
+    //   // The public URL can be used to directly access the file via HTTP.
+    //   const publicUrl = format(
+    //     `https://storage.googleapis.com/${googleBucket.name}/${blob.name}`
+    //   );
+    
+    res.status(200).send(req.body.new_name);
+    });
+    
+    blobStream.end(req.file.buffer);
+    res.status(200);
+  });
+  app.post('/delete-video', multerVar.single('file'), (req, res, next) => {
+
+        async function deleteFile() {
+          // Deletes the file from the bucket
+          await gc.bucket("microcontent-creator").file(req.body.deleted_object).delete();
+
+        }
+    
+        deleteFile().catch(console.error);
+        res.status(200).send(req.body.deleted_object);
+
+  });
+
+app.post('/delete-item', multerVar.single('file'), (req, res, next) => {
+
+  async function deleteFile() {
+    // Deletes the file from the bucket
+    await gc.bucket("microcontent-creator").file(req.body.item).delete();
+
+  }
+  console.log('deleted',req.body.item)
+
+  deleteFile().catch(console.error);
+  res.status(200).send(req.body);
+
+});
+
+// app.post('/download-video', multerVar.single('file'), (req, res, next) => {
+
+//   async function downloadFile() {
+//     // passing the options
+//     const options = {
+//       destination: "C:/Users/Francisco/Downloads/lalala5.mp4",
+//     };
+
+//     await gc.bucket("microcontent-creator").file(req.body.link).download(options);
+//   }
+//   console.log(req.body.link)
+
+//   downloadFile().catch(console.error);
+//   res.status(200).send(req.body);
+
 // });
+
 
 app.use('/projects', projectsRoutes )
 

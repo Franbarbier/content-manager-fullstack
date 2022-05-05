@@ -95,7 +95,7 @@ function selectFileNugget(e){
 
        if(videoNugget.nombre){
               // Eliminar de AWS
-              console.log("Ya habia uno")
+              //Meterlo en un global funcitons
               deleteNuggetVideo(e, "videos/")
        }
 
@@ -113,56 +113,67 @@ function selectFileNugget(e){
 
 function deleteNuggetVideo(e, directory) {
        e.preventDefault()
+       console.log(e.target)
 
-       
+       let targett = e.target
        if ( window.confirm("Desea eliminar el video de este nugget?") ) {
        
-              var video_key = directory+'nugget' + nugget.id + "-"+project_id +'-'+ videoFileNugg?.name
-              axios.post(serverEndpoint+'delete-item', {video_key}, { 
+              let deleted_object = directory+'nugget' + nugget.id + "-"+project_id +'-'+ videoFileNugg?.name
+
+              axios.post(serverEndpoint+'delete-video', {deleted_object}, { 
                     
-              onUploadProgress: (progressEvent) => {
-                  const progressNugg = ( (progressEvent.loaded / progressEvent.total) * 100 ).toFixed();
-                  setProgressUpload(progressNugg);
-              }
-  
-          } )
-          .then((e)=>{
+                     onUploadProgress: (progressEvent) => {
+                     const progressNugg = ( (progressEvent.loaded / progressEvent.total) * 100 ).toFixed();
+                     setProgressUpload(progressNugg);
+                     }
+       
+              } )
+              .then((e)=>{
                      console.log('eliminado', e)
-                     setVideoNugget({estado: "No elegido"})
-                     setEstadoNugget(1)              
+                     if (targett.tagName == 'IMG') {
+                            setVideoNugget({estado: "No elegido"})
+                            setEstadoNugget(1)
+                            var newNuggets = nuggets
+                            delete newNuggets[newNuggets.indexOf(nugget)].video_name
+                            setNuggets(newNuggets)
+
+                     }
               })
               .catch( (e) =>{
                      console.log('error:::', e.error)
               } )
+       
+
+             
        } 
 }
 
 useEffect(()=>{
        
-       
-       let file = videoFileNugg
-       const data = new FormData()
-       var new_name = 'nugget' + nugget.id + "-"+project_id +'-'+ videoFileNugg?.name
-       data.append('new_name',new_name)
-       data.append( 'file', file )
+       // Ya no se suben videos nugget onChange, sino que cuando se guarda manualmente el proyecto
+       // let file = videoFileNugg
+       // const data = new FormData()
+       // var new_name = 'nugget' + nugget.id + "-"+project_id +'-'+ videoFileNugg?.name
+       // data.append('new_name',new_name)
+       // data.append( 'file', file )
        
 
-        axios.post(serverEndpoint+'upload-video-nugget', data, { 
+       //  axios.post(serverEndpoint+'upload-video', data, { 
                     
-            onUploadProgress: (progressEvent) => {
-                const progressNugg = ( (progressEvent.loaded / progressEvent.total) * 100 ).toFixed();
-                setProgressUpload(progressNugg+1);
-                console.log(progressUpload)
-            }
+       //      onUploadProgress: (progressEvent) => {
+       //          const progressNugg = ( (progressEvent.loaded / progressEvent.total) * 100 ).toFixed();
+       //          setProgressUpload(progressNugg+1);
+       //          console.log(progressUpload)
+       //      }
 
-        } )
-        .then((e)=>{
-          console.log('el nugget video subido', e)
-          setProgressUpload(101)
-        })
-        .catch( (e) =>{
-            console.log('error:::', e.error)
-        } )
+       //  } )
+       //  .then((e)=>{
+       //    console.log('el nugget video subido', e)
+       //    setProgressUpload(101)
+       //  })
+       //  .catch( (e) =>{
+       //      console.log('error:::', e.error)
+       //  } )
 }, [videoFileNugg] )
 
 
@@ -191,7 +202,7 @@ useEffect(()=>{
 
                                           { videoNugget.estado == "elegido" &&
                                                  <div className='video-options'>
-                                                        <div><a href={'https://content-creator-2.s3.sa-east-1.amazonaws.com/videos/nugget' + nugget.id + "-"+project_id +'-'+ videoNugget.nombre.replaceAll( "+", "%2B" ).replace(/\s+/g,'+')}><img src="/assets/download.png" title="Descargar"/></a></div>
+                                                        <div><a target="_blank" href={'https://storage.googleapis.com/microcontent-creator/videos/nugget' + nugget.id + "-"+project_id +'-'+ videoNugget.nombre.replaceAll( "+", "%2B" ).replace(/\s+/g,'%20')}><img src="/assets/look.png" title="Ver y descargar"/></a></div>
                                                         <div><img src="/assets/pencil.png" onClick={ document.getElementById(`addVid${nugget.id}`)?.click } title="Editar"/></div>
                                                         <div><img src="/assets/delete.png" onClick={ (e)=>{deleteNuggetVideo(e, 'videos/')} } title="Eliminar"/></div>
                                                  </div>
