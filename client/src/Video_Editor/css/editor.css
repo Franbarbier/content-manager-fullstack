@@ -91,6 +91,7 @@ body{
     width: 100%;
     cursor: pointer;
     border-radius: 1em;
+    max-height: 50vh;
   }
   
   .playback {
