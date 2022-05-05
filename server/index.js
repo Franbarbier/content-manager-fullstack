@@ -131,22 +131,6 @@ app.post('/delete-item', multerVar.single('file'), (req, res, next) => {
 
 });
 
-// app.post('/download-video', multerVar.single('file'), (req, res, next) => {
-
-//   async function downloadFile() {
-//     // passing the options
-//     const options = {
-//       destination: "C:/Users/Francisco/Downloads/lalala5.mp4",
-//     };
-
-//     await gc.bucket("microcontent-creator").file(req.body.link).download(options);
-//   }
-//   console.log(req.body.link)
-
-//   downloadFile().catch(console.error);
-//   res.status(200).send(req.body);
-
-// });
 
 
 app.use('/projects', projectsRoutes )

@@ -103,7 +103,9 @@ const NewProject = () => {
       alert('Todo joya rrope')
       setProgress(100)
       console.log(data.split('-')[0])
-      window.location.href = serverEndpoint+"project/"+data.split('-')[0];
+      // window.location.href = "localhost/project/"+data.split('-')[0];
+      window.location.href = "https://famous-malasada-c0ea7e.netlify.app/project/"+data.split('-')[0];
+      
     }
     if (estado == "error") {
       alert('Hubo un error al guardar el proyecto')
