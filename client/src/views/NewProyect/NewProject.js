@@ -103,7 +103,7 @@ const NewProject = () => {
       alert('Todo joya rrope')
       setProgress(100)
       console.log(data.split('-')[0])
-      window.location.href = "http://localhost:3000/project/"+data.split('-')[0];
+      window.location.href = serverEndpoint+"project/"+data.split('-')[0];
     }
     if (estado == "error") {
       alert('Hubo un error al guardar el proyecto')
