@@ -11,16 +11,32 @@ import Editor from './Video_Editor/VideoEditor'
 import NewProject from "./views/NewProyect/NewProject";
 import Dash from './views/dash/dash';
 import EditProject from './views/EditProject/EditProject';
+import Login from './views/Login/Login';
 
+import { verifyUser } from './api';
 
 const App = () => {
 
 
   const [activeTab, setActiveTab] = useState('dash')
+  const [user, setUser] = useState({})
+
+  useEffect(()=>{
+    verifyUser().then((res)=>setUser(res))
+  }, [])
+
+  useEffect(()=>{
+    console.log(user)
+  })
 
 
   function render(){
     return (
+      <>
+
+      { !user.mail ?
+        <Login setUser={setUser} />
+      :
         <Router>
           <AppProvider>
           <ScrollToTop/>
@@ -34,14 +50,11 @@ const App = () => {
                 <Route path="/project/:id">
                     <EditProject setActiveTab={setActiveTab} />
                 </Route>
-            {/* <Route path="/cliente/:id">
-                    <MainLayout>
-                        <ApartadoCliente setActiveTab={setActiveTab} user={user} />
-                    </MainLayout>
-                </Route> */}
             </Switch>
             </AppProvider>
         </Router>
+        }
+      </>
     );
   }
 

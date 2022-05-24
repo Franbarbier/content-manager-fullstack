@@ -9,7 +9,9 @@ import multer from 'multer'; //ver si se desinstala
 
 import {Storage} from '@google-cloud/storage'
 
+import userRoutes from './routes/users.js'
 import projectsRoutes from './routes/projects.js';
+import { verifyToken } from './auth.js';
 
 const app = express();
 
@@ -28,8 +30,8 @@ app.use(cors({
 
 
 const gc = new Storage({
-    keyFilename: "pivotal-leaf-190722-47aff9c9d936.json",
-    projectId : "pivotal-leaf-190722"
+    keyFilename: "galvanized-yeti-350622-cd81939647ba",
+    projectId : "galvanized-yeti-350622"
 })
 
 const googleBucket = gc.bucket('microcontent-creator')
@@ -64,12 +66,7 @@ const multerVar = new multer({
     });
   
     blobStream.on('finish', () => {
-    //   // The public URL can be used to directly access the file via HTTP.
-    //   const publicUrl = format(
-    //     `https://storage.googleapis.com/${googleBucket.name}/${blob.name}`
-    //   );
-    
-    res.status(200).send(req.body.new_name);
+      res.status(200).send(req.body.new_name);
     });
     
     blobStream.end(req.file.buffer);
@@ -81,11 +78,9 @@ const multerVar = new multer({
       res.status(400).send('No file uploaded.');
       return;
     }
-    // req.file.originalname = req.body.new_name
     // Create a new blob in the bucket and upload the file data.
     const blob = googleBucket.file('thumbs/'+req.file.originalname);
     const blobStream = blob.createWriteStream();
-    // console.log(blobStream)
     console.log('thumbs/'+req.file.originalname )
   
     blobStream.on('error', err => {
@@ -132,13 +127,10 @@ app.post('/delete-item', multerVar.single('file'), (req, res, next) => {
 });
 
 
-
+app.use('/users', userRoutes)
 app.use('/projects', projectsRoutes )
 
-// All other GET requests not handled before will return our React app
-// app.get('*', (req, res) => {
-//     res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
-// });
+
 
 const CONNECTION_URL = 'mongodb+srv://micro-content:microcontent@cluster0.w4vwv.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
 const PORT = process.env.PORT || 5000;

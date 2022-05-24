@@ -5,9 +5,10 @@ import { serverEndpoint } from '../globals';
 // Obtenemos el token del localStorage
 const token = window.localStorage.getItem('token');
 
-// const headers = {
-//     'Authorization': `Bearer ${token}`
-// }
+const headers = {
+    'Authorization': `Bearer ${token}`
+}
+
 
 const ENDPOINT = serverEndpoint;
 
@@ -19,5 +20,16 @@ export const editProject = (project) => axios.patch(`${url_projects}/`, project)
 
 // export const createCliente = (newCliente) => axios.post(url_clientes, newCliente, {headers});
 
+const url_users = ENDPOINT+'users'
+// export const login = () => axios.get(url_login, user, {headers});
+export const login = (user) => axios.post(`${url_users}/login`, user);
+// export const login = (user) => axios.post(`${url_users}/login`, user);
+export const verifyUser = async (id) => {
+    var res = await fetch(`${url_users}/verify`, {method: 'GET', headers})
+    .then(response => response.json())
+    .then(data => data);
+    
+    return res
+}
 
 

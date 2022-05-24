@@ -1,27 +1,6 @@
 import mongoose from "mongoose";
 var Schema = mongoose.Schema;
 
-// const timings = new Schema({
-//     start: Number,
-//     end: Number
-// });
-
-// const nugget = new Schema({
-//     status: {
-//         type: Number,
-//         default: 0
-//     },
-//     id : Number,
-//     name: String,
-//     timings: [timings],
-//     video_edited_url : String
-   
-// });
-
-// const nuggets = new Schema({
-//     nugget
-// });
-
 
 
 const projectSchema = new Schema({
