@@ -3,7 +3,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import { deleteProject } from '../../actions/projects';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { serverEndpoint } from '../../globals';
+import { serverEndpoint, bucket_name } from '../../globals';
 
 // import thumg_img from '../../../../server/public/'
 
@@ -119,7 +119,7 @@ function deleteThisProject(e) {
                 <div className='project-card'>
                     <div>
                         <div className="thumb">
-                            <img src={ project.thumb_url ? "https://storage.cloud.google.com/microcontent-creator/thumbs/"+project._id+"-"+project.thumb_url : "https://i.ytimg.com/vi/QAuJU5FUyC0/maxresdefault.jpg"}/>
+                            <img src={ project.thumb_url ? "https://storage.cloud.google.com/"+bucket_name+"/thumbs/"+project._id+"-"+project.thumb_url : "https://i.ytimg.com/vi/QAuJU5FUyC0/maxresdefault.jpg"}/>
                         </div>
                         <div>
                             <h3>{project.name}</h3>

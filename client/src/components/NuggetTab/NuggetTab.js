@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import NuggetProgress from './NuggetProgress/NuggetProgress';
 import axios from 'axios';
-import { serverEndpoint } from '../../globals';
+import { serverEndpoint, bucket_name } from '../../globals';
 
 
 import './NuggetTab.css';
@@ -199,10 +199,10 @@ useEffect(()=>{
                                                  
                                                  <span>{ videoNugget.estado == "elegido" ? videoNugget.nombre : "No hay video subido" }</span>
                                           </div>
-
+                                          
                                           { videoNugget.estado == "elegido" &&
                                                  <div className='video-options'>
-                                                        <div><a target="_blank" href={'https://storage.googleapis.com/microcontent-creator/videos/nugget' + nugget.id + "-"+project_id +'-'+ videoNugget.nombre.replaceAll( "+", "%2B" ).replace(/\s+/g,'%20')}><img src="/assets/look.png" title="Ver y descargar"/></a></div>
+                                                        <div><a target="_blank" href={'https://storage.googleapis.com/'+bucket_name+'/videos/nugget' + nugget.id + "-"+project_id +'-'+ videoNugget.nombre.replaceAll( "+", "%2B" ).replace(/\s+/g,'%20')}><img src="/assets/look.png" title="Ver y descargar"/></a></div>
                                                         <div><img src="/assets/pencil.png" onClick={ document.getElementById(`addVid${nugget.id}`)?.click } title="Editar"/></div>
                                                         <div><img src="/assets/delete.png" onClick={ (e)=>{deleteNuggetVideo(e, 'videos/')} } title="Eliminar"/></div>
                                                  </div>

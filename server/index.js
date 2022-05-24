@@ -23,6 +23,10 @@ app.get('/', (req, res) => {
     res.send({ "msg": "This has CORS enabled 🎈" })
 })
 
+const bucket_name = 'content-creator'
+// const bucket_name = 'microcontent-creator'
+
+
 app.use(cors({
     // origin: 'http://localhost:3000'
     origin: '*'
@@ -30,11 +34,16 @@ app.use(cors({
 
 
 const gc = new Storage({
-    keyFilename: "galvanized-yeti-350622-cd81939647ba",
+    keyFilename: "galvanized-yeti-350622-cd81939647ba.json",
     projectId : "galvanized-yeti-350622"
 })
 
-const googleBucket = gc.bucket('microcontent-creator')
+// const gc = new Storage({
+//   keyFilename: "pivotal-leaf-190722-47aff9c9d936.json",
+//   projectId : "pivotal-leaf-190722"
+// })
+
+const googleBucket = gc.bucket(bucket_name)
 
 const multerVar = new multer({
     storage: multer.memoryStorage(),
@@ -103,7 +112,7 @@ const multerVar = new multer({
 
         async function deleteFile() {
           // Deletes the file from the bucket
-          await gc.bucket("microcontent-creator").file(req.body.deleted_object).delete();
+          await gc.bucket(bucket_name).file(req.body.deleted_object).delete();
 
         }
     
@@ -116,7 +125,7 @@ app.post('/delete-item', multerVar.single('file'), (req, res, next) => {
 
   async function deleteFile() {
     // Deletes the file from the bucket
-    await gc.bucket("microcontent-creator").file(req.body.item).delete();
+    await gc.bucket(bucket_name).file(req.body.item).delete();
 
   }
   console.log('deleted',req.body.item)

@@ -7,7 +7,7 @@ import './css/editor.css'
 import Editor from './Editor'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faLightbulb, faMoon } from '@fortawesome/free-solid-svg-icons'
-import { serverEndpoint } from '../globals';
+import { serverEndpoint, bucket_name } from '../globals';
 
 class VideoEditor extends React.Component {
     constructor(props) {
@@ -40,7 +40,7 @@ class VideoEditor extends React.Component {
         
         if( this.props.video_url && this.props.video_url.includes('.') ){
             // https://storage.cloud.google.com/microcontent-creator/videos/6266a4a63afc3426532aeb0c-screen-capture%2B(2).mp4?authuser=2
-            var urlGcEncoded = "https://storage.cloud.google.com/microcontent-creator/videos/"+this.props.video_url.replaceAll( "+", "%2B" )
+            var urlGcEncoded = "https://storage.cloud.google.com/"+bucket_name+"/videos/"+this.props.video_url.replaceAll( "+", "%2B" )
             urlGcEncoded = urlGcEncoded.replace(/\s+/g,'%20')
             console.log(urlGcEncoded)
             this.setState({
