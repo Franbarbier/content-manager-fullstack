@@ -2,7 +2,7 @@
 export const serverEndpoint = "https://fullstack-content-manager.herokuapp.com/"
 
 // teo
-export const bucket_name = 'content-creator'
+// export const bucket_name = 'content-creator'
 
 // mio
-// export const bucket_name = 'microcontent-creator'
+export const bucket_name = 'microcontent-creator'
