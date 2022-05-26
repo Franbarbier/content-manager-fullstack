@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "git-yeti-350622",
+  "private_key_id": "4ba49a223aa258e17b570215608313c47e6626fc",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQDlneSa/Ovc/2tA\nVPDzYp4URoQ2+SZiSGKK0JOkhYYfyBJblJN+5U89uqEBwdR39Bs2jEVTLTdewXXE\nl+8BV/waErsr3aUyWrDShLlU5EHdi8Bb4V1LvSItCqX/M31HtOtBERXqIVRJGN+P\nnwks7rHSLOneUAzp//txxDPwE/NwiWAqFamRi2OU57eicLRCjlOWVwfbvad/pKcO\nDQCRhvGKV722FO7oIG7V3/NhR8ChgkSFcX1CsVwakvAbNp524B9KlA1RW+6Ud0xy\njus7SqzWgCGKg//Fw9qGlDwlowBlHOcmlYwQnd/CuM/+LKtSSarcYBJSURxKWCD6\n1CO440InAgMBAAECggEAF1zbhpTcZMs3kj9HmDlSWerGMhe4pZW1h71AKyRg02QB\nJitLCfAdV2u2onNNLHqnDYOehsove5HV6zpa7vk7pTrUVjAXn7TQOqNBfiyOsmgx\nRXKmkk8R+/Y85zyfGcguivDI7jO/m9kO33ya1jpf18GKdtG7S/sn44Px6ugExCWC\nFec2IxOist1u4tN/2na2Y5zZjhCpWmc0sxxbkJQ6Afd6lDDdktd7Fu1zhXeoAYmq\nc0NdMu7lhMkW+dB/uxeUgf/1pxaln/C+a03mLgfh/8zxr/QhSkpkyJCzeNLmnMx4\njhNtLsiyYbyDRp/Wxr6eJRbR24qFvF3jDnaR+Lw0dQKBgQD+oDfMNm9LVfUTsNV3\nbpFv72+tW4Ttq01uDE+a1RfvkbiLglXAb06YP7UgXO8TvW9pMkcBVWeiMYGm+5Dw\nAl86HuRV7Km/yhy5YGCogzxo7e0PrQrvdjmxxeRHXIJ49F3xMoFwhQIXDXzZ3ttv\nyYRHstmorPlrcLblOE4ZMGKakwKBgQDm2x+VLo8UPYj6TTTIisQ/myJNrM4KGM83\no12CHBZaMYmeT+VtqZ6Rt0wmYw61gjuqzqv0OkWU8F7aDFznClvPy+AnbieGMQEq\nmZGEBNrw9pvUcwOnUDlCZK7arbbQgr3sZGZLJ8UgCb56kThW7gAV6S0T+XgR1//3\nkduRGjdynQKBgQDQOoBHDcEoT8xTZQq9V/uyGZIvqCdmIe/5bjHvghLIBVhxJo4w\nCBazJW5fYADYGNQyqD4vFgPhPTE1OIeH77imlDrRFfCf+o5Q/0Msq95MRT7X0gCe\nYgW+nwIXZc0BU3470LzQIsXZylru5XR4z8jQxa+AZKy4s32uqMQdj1cj5wKBgQCF\nBlcYm4+O1jaMJNj5hhy3mikWITFI2CrvoI9NXenzZwAp3VgS7N6WkMysggADz1ua\nfSTQwpM905SUiPMvnuRwxMYRcoQL60kExyD2teWDXFdHAE9mpe+YtnObRuZFGFFg\nWionvG72mybLccrJLLOX7JkxHVt2zMSOX9nprvWscQKBgQDTGQZEcRh67KeiNaRy\nXiVTCEmi00pS1y/JNuJfL5g0GKajMMXGN3PqU3T75/G6CrN+Mbz7wVznYkmL1Mdn\nVtIt6d9kEegM6Jhd+Fpw4hv+UvO1oKNismTFgkmx0jfi5zpQfL83uGN0bo3bfCoQ\nV/P1+d5RWYZFlPkv5cYFrpVifw==\n-----END PRIVATE KEY-----\n",
+  "client_email": "micro-contenido@galvanized-yeti-350622.iam.gserviceaccount.com",
+  "client_id": "105877409675784722270",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/micro-contenido%40galvanized-yeti-350622.iam.gserviceaccount.com"
+}
