@@ -23,8 +23,8 @@ app.get('/', (req, res) => {
     res.send({ "msg": "This has CORS enabled 🎈" })
 })
 
-const bucket_name = 'content-creator'
-// const bucket_name = 'microcontent-creator'
+// const bucket_name = 'content-creator'
+const bucket_name = 'microcontent-creator'
 
 
 app.use(cors({
@@ -33,15 +33,15 @@ app.use(cors({
 }));
 
 
-const gc = new Storage({
-    keyFilename: "galvanized-yeti-350622-4ba49a223aa2.json",
-    projectId : "galvanized-yeti-350622"
-})
-
 // const gc = new Storage({
-//   keyFilename: "pivotal-leaf-190722-47aff9c9d936.json",
-//   projectId : "pivotal-leaf-190722"
+//     keyFilename: "galvanized-yeti-350622-4ba49a223aa2.json",
+//     projectId : "galvanized-yeti-350622"
 // })
+
+const gc = new Storage({
+  keyFilename: "pivotal-leaf-190722-47aff9c9d936.json",
+  projectId : "pivotal-leaf-190722"
+})
 
 const googleBucket = gc.bucket(bucket_name)
 
