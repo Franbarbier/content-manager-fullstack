@@ -104,7 +104,8 @@ const NewProject = () => {
       setProgress(100)
       console.log(data.split('-')[0])
       // window.location.href = "localhost/project/"+data.split('-')[0];
-      window.location.href = "https://famous-malasada-c0ea7e.netlify.app/project/"+data.split('-')[0];
+      // window.location.href = "https://famous-malasada-c0ea7e.netlify.app/project/"+data.split('-')[0];
+      window.location.href = "https://famous-malasada-c0ea7e.netlify.app";
       
     }
     if (estado == "error") {
