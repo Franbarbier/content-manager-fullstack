@@ -63,6 +63,12 @@
     font-size: 0.8em;
     margin-right: 4px;
 
+    max-width: 22%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: inline-block;
+
 }
 #delete-cont{
     position: absolute;

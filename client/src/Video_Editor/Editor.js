@@ -412,7 +412,8 @@ class Editor extends React.Component {
                 var minutos = decimalizaso.toString().split('.')[0]
                 
                 var segundos = decimalizaso.toString().split('.')[1]
-                segundos = 60* ( (segundos.substring(0, 4) * 1) / 100 )  /100
+                console.log(segundos)
+                segundos = 60* ( (segundos?.substring(0, 4) * 1) / 100 )  /100
                 segundos = segundos.toFixed(2)
 
             }else{

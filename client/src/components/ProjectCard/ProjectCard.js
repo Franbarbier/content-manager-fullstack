@@ -138,7 +138,7 @@ function deleteThisProject(e) {
                         </div>
                         <div className='tags-cont'>
                             {project.tags.map((tag, index)=>(
-                                <span>{tag}</span>
+                                <span title={tag}>{tag}</span>
                             ))}
                         </div>
                         <div onClick={ (e)=>{ deleteThisProject(e) }  } className="delete-cont">
