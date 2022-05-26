@@ -24,7 +24,7 @@ app.get('/', (req, res) => {
 })
 
 // const bucket_name = 'content-creator'
-const bucket_name = 'microcontent-creator'
+const bucket_name = 'new-content-creator'
 
 
 app.use(cors({
@@ -39,8 +39,8 @@ app.use(cors({
 // })
 
 const gc = new Storage({
-  keyFilename: "pivotal-leaf-190722-47aff9c9d936.json",
-  projectId : "pivotal-leaf-190722"
+  keyFilename: "centering-river-351414-524ce47962b8.json",
+  projectId : "centering-river-351414"
 })
 
 const googleBucket = gc.bucket(bucket_name)

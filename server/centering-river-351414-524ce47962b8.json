@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "centering-river-351414",
+  "private_key_id": "524ce47962b82f6feca6793323a5d9c6aea51754",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDR6Kt8Kqe/OQD9\nMmaFzDchGxyTQGXaLVb6f3DAKyL5iR1DhfrmKq84C40zuA5phTMfsloDWXGoiYwN\n0YWaDvSuJJ4muLtovIbwDE/8cMyqd2lD++eFap0hcpjysxGRVpUrjZFuBFFi8oM/\npIhdSPxkRNhDktryrwXxqRWxyb5Gf+15kj3H/9/YbFhciBnDeOzfpEzrQ7yodeCm\n44uhuvHZL4del7HnXtcp2fsQ5Ob5wfT1JI6H4YkEt3ns+bqEgAYDpipLewqQRH5N\n0zOz35e5iGLkhQ/PgwBjNP+K5E5XE2pOTJaKSbxaaHOogyFcN/fcK5Vnmgyb16G4\nGtgZ/Az/AgMBAAECggEAY/r2PyiUCL1OjsskUQNhmNewhySrvr1MyfjMjAOf34pj\nEWfuBxZ6qe+6nFFFMBZ9MNJDFIhUXinRtz0+bRBFk/KmD5x6y1rMzOaYbI2Ptnw0\n++gusPoEiMtsNWF8cyTx3TJLfEL7Pu1y/WvRddlPOjUeayU2O1SJOL9IMYv9oNbt\n5lAs+Uo1/RW9DTvVxJKWd+lzpr4TxX4YpReC8b/goJomZtzw9emBYxq/ij0pZYQd\nU+yO4scZbgtQbY9mgfpKlrm7BuGyaCPGODCrDda4xqtnVBfXxWRdmfszg/2SaT7E\nMZdYw+GTAFdq98l3MK0vdgkOFYC7mUwxcL7ieM6idQKBgQD1Zb7pD5c06jSD3L59\n6bWXbAVHI2ZcgfuemR072+dPG2Zbpg2lE7dx18sLaQajnzGwV+9JaAe7C3NJZlH4\npYMxzEjYmbgZ7M2FrJtN6lCYSMHP0T5jBPLBshKhY8mB0Der1SoR3bAU9TX66D1K\nocrYdI7Lv7abP1rQKM9dkMI1ywKBgQDa+mXEQDiMwaXI2plGnzeFmqiqn9mVHcG/\n5LG9LUF5Mvbc6JtfRvtC65n5w33nWUnG8vN3YLJX8FiA+J5ZovtuHfrKIlbxKix7\ncOLoeBIWLLvyKqKnrhm/d1SrQerU7zLtA+zPjEf7Bar3nIqWobi7LYdCTASETz+p\nUEZ4Wl0/HQKBgQCA7XPf/tDyfBobLV7nyGIfrCEZvv+ImsIYEVnKmT5t0Xd1r0h7\n8l/u7/E9jXBvhrQUch7F8mIdY2auqZNnj43eG/Yp1pljBYb1NDpkNTciyxcImGau\nn2rrWSNwp3y3Ny4ImXYA7PgWCr7RlDKfg2GPV62uXosSBbcwpkBMaEGhAQKBgQDT\nizLk9GWtFSZjc0q/vvCUUWS/8MzyEV0rVHOgnieyPlnd75ip4pi5fYGyl/j5lnh/\nihVKLlAcREQ70/KmBZ2AM9YjkCkNsgBnABc1HUnbwjuPJ0EbXEXjghR5naSPMMWx\n0yjjGFIxXrhbnQ8FlhYwPTt+AJIcf7KwjqyFeEa8wQKBgFoeDGyenZOsziRf7Vqe\nrNy26RRNCGZ2dhRKqgp/ubvJLnzCictt8NncnSqlpnvhVauPpwPUyZkCpz2TfsdQ\neYjaYR0wvfsJACddoarkclsMxb4u/89/2zMGTW3eL9y+nflO8NNmrqbi6IZrPcMX\ns2WCgfNwQCiXtJi9IcK+QbjQ\n-----END PRIVATE KEY-----\n",
+  "client_email": "service-account@centering-river-351414.iam.gserviceaccount.com",
+  "client_id": "106416829978761950019",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/service-account%40centering-river-351414.iam.gserviceaccount.com"
+}
