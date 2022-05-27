@@ -560,6 +560,11 @@ class Editor extends React.Component {
                               </div>
                               <br />
                               <textarea onChange={ e => this.corteInfo(e, index, "descripcion") } value={corte.descripcion ? corte.descripcion : ''} placeholder='Notas'/>
+
+                                <div className="deleteCorte">
+                                    <img src="/assets/delete-trash.png" onClick={ ()=>{ if (this.state.timings.length > 1) { this.deleteGrabber(index) }else{ alert('Tiene que haber por lo menos 1 corte') } } } />
+                                </div>
+
                             </li>
                         
                       ))

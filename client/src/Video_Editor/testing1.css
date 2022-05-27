@@ -6,6 +6,28 @@
 #Testing1-view li{
     padding: 3% 0;
     border-bottom: 1px solid #ddd;
+    position: relative;
+}
+
+
+.deleteCorte{
+    position: absolute;
+    cursor: pointer;
+    opacity: 0.6;
+    transition: .2s;
+    top: 12%;
+    right: 17%;
+    padding: 9px;
+    width: 21px;
+    height: 21px;
+    background-color: #ddd;
+    border-radius: 50px;
+}
+.deleteCorte img {
+    width: 21px;
+}
+.deleteCorte:hover{
+    opacity: 1;
 }
 #Testing1-view li:last-child{
     /* border-bottom: none; */
