@@ -28,15 +28,26 @@ const Dash = ({setActiveTab }) => {
 
     function checkBuscador(proyecto){
 
+        
         function ifIsInTag(proyecto){
             for (let index = 0; index < proyecto.tags.length; index++) {
                 const element = proyecto.tags[index];
-                return element.toLowerCase().includes(buscador.toLowerCase())
+
+                if (element.toLowerCase().includes(buscador.toLowerCase())) {
+                    return true
+                }
+                
             }
+            return false
         }
+        
+        
+        // console.log(ifIsInTag(proyecto))
+
         if (buscador == '' || proyecto.name.toLowerCase().includes(buscador.toLowerCase()) || ifIsInTag(proyecto) ) {
             return true
         }else{
+            console.log()
             return false
         }
     }
