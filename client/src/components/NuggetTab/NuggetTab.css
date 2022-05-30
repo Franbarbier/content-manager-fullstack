@@ -101,7 +101,7 @@
     transition: .5s;
 }
 .labelVidNugget{
-    padding: 8px 12px;
+    padding: 17px 12px;
     border: 1px solid rgb(145, 145, 145);
     background-color: rgba(255,255,255,0.4);
     border-radius: 5px;
@@ -133,11 +133,20 @@
     transition: .08s;
     background: var(--violeta);
     transition-delay: .1s;
+    padding: 0!important;
 }
 .labelVidNugget{
     display: flex;
     align-items: center;
     justify-content: space-between;
+    position: relative;
+}
+#nameNimg{
+    position: absolute;
+    left: 1%;
+}
+#nameNimg>img{
+    margin-right: 5px;
 }
 .labelVidNugget>div{
     display:flex;
@@ -146,9 +155,9 @@
     right: 0;
     z-index: 99;
     /* background: #efe8f8; */
-    padding: 0 2%;
+    padding: 0 3% 0 2%;
     height: 100%;
-    background-image: linear-gradient(45deg, #efe8f800, #efe8f8 20%);
+    background-image: linear-gradient(90deg, #efe8f800, #efe8f8 20%);
 }
 .upload-video-nugget, .edit-video-nugget{
     padding: 6px 8px;

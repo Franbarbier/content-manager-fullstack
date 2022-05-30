@@ -14,7 +14,6 @@ const AddTag = ({setProjectData, projectData}) => {
     
     useEffect( ()=>{
         setProjectData( { ...projectData, tags: tagList  } )
-        console.log(tagList)
     }, [tagList] )
     
     useEffect( ()=>{

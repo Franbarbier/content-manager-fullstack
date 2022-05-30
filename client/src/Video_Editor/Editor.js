@@ -371,8 +371,9 @@ class Editor extends React.Component {
         var mins = document.querySelectorAll('.cortes')[index].querySelector('#'+point+'minutos'+index).value
         var segs = document.querySelectorAll('.cortes')[index].querySelector('#'+point+'segundos'+index).value
 
+        
         var newTime = (mins*60)*1 + segs*1
-                
+        
         var childData = {
             "value" : newTime,
             "point" : point,
@@ -380,9 +381,9 @@ class Editor extends React.Component {
         }
         
         console.log(childData)
-        
+
         let newTimings = this.state.timings
-        newTimings[childData.index][childData.point] = childData.value * 1
+        newTimings[childData.index][childData.point] = childData.value
 
         this.setState({
             timings: newTimings
@@ -403,34 +404,28 @@ class Editor extends React.Component {
     }
   
     getValueTime = (index, point, type) => {
-        
-        if(this.state.timings[index]){
-            var formateo = this.state.timings[index][point]
-            
-            if (formateo > 59) {
-                var decimalizaso = (formateo / 60)
-                var minutos = decimalizaso.toString().split('.')[0]
-                
-                var segundos = decimalizaso.toString().split('.')[1]
-                segundos = 60* ( (segundos?.substring(0, 4) * 1) / 100 )  /100
-                segundos = segundos.toFixed(2)
 
-            }else{
-                var minutos = '00'
-                var segundos = formateo.toFixed(2)
-            }
-            
-            var final_num
-            if (type == 'minutos') {
-                    final_num = minutos
-            }
-            if (type == 'segundos') {
-                final_num = segundos* 1
-            }
-            return final_num
-        }else{
-            return 0
+        const formateo = this.state.timings[index][point]
+
+        var minutes = Math.floor(formateo / 60);
+        var seconds = formateo - minutes * 60;
+
+        console.log(minutes, seconds)
+        
+        var final_num
+        if (type == 'minutos') {
+            final_num = minutes
         }
+        if (type == 'segundos') {
+            final_num = seconds
+            if (final_num < 10) {
+                final_num = '0'+final_num
+            }
+            console.log(seconds)
+        }
+                    
+        return final_num
+
     }
     
 

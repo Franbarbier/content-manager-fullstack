@@ -194,7 +194,7 @@ useEffect(()=>{
                             <div>
                                    <label className="labelVidNugget" for={`addVid${nugget.id}`}>
                                           <input onChange={(e)=>{ selectFileNugget(e) } } id={`addVid${nugget.id}`} type="file" />
-                                          <div>  
+                                          <div id="nameNimg">  
                                                  { videoNugget.estado == "elegido" ? <img src="/assets/comprobar1.png" width='12px' style={{'marginRight':'5px' , 'transform': 'translateY(12%)', 'transition':'.2s'}} /> : <img src="/assets/clip-de-papel.png" width='12px' style={{'marginRight':'5px'}} /> }
                                                  
                                                  <span>{ videoNugget.estado == "elegido" ? videoNugget.nombre : "No hay video subido" }</span>
