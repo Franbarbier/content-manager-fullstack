@@ -66,7 +66,7 @@
     background-color: #7e45c435;
 }
 
-.copy, .look{
+.copy, .look, .nota{
     width: 32px;
     height: 32px;
     opacity: 0.5;
@@ -75,7 +75,7 @@
     position: relative;
     margin-left: 5%;
 }
-.copy img, .look img{
+.copy img, .look img, .nota img{
     width: 60%;
     position: absolute;
     left: 50%;
@@ -83,7 +83,7 @@
     transform: translate(-50%, -50%);
     float: right;
 }
-.copy:hover, .look:hover{
+.copy:hover, .look:hover, .nota:hover{
     opacity: .9;
 }
 .copy p{
@@ -206,4 +206,15 @@
 }
 .video-options img:hover{
     opacity: 0.9;
+}
+.hayNota:after{
+    content: '';
+    width: 10px;
+    height: 10px;
+    display: block;
+    background-color: var(--violeta);
+    position: absolute;
+    top: 0;
+    right: 0;
+    border-radius: 50px;
 }

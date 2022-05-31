@@ -17,6 +17,7 @@ import NuggetTab from '../../components/NuggetTab/NuggetTab';
 import AddTag from '../../components/AddTag/AddTag';
 import { serverEndpoint } from '../../globals';
 import Menu from '../../components/Menu/Menu';
+import ModalNuggetNote from '../../components/ModalNuggetNote/ModalNuggetNote';
 
 
 const EditProject = () => {
@@ -29,9 +30,11 @@ const EditProject = () => {
   const [nuggetCounter, setNuggetCounter] = useState(1)
   const [activeNugget, setActiveNugget] = useState(1)
   const [renderInfoNugget, setRenderInfoNugget] = useState(false)
+  const [renderNoteNugget, setRenderNoteNugget] = useState(false)
   const [progress, setProgress] = useState()
   const [primeraVez, setPrimeraVez] = useState(true)
   const [timings, setTimings] = useState()
+
 
   const { id } = useParams();
 
@@ -88,6 +91,17 @@ const EditProject = () => {
   
     setNuggets(oldState)
 
+  }
+  
+  function setNuggetNote(nota){
+    var oldState = nuggets
+    let activeNugg = nuggets.filter(nugget => nugget.id == activeNugget);
+    let activeOne = oldState.indexOf(activeNugg[0])
+
+    oldState[activeOne].nota = nota 
+  
+    setNuggets(oldState)
+    setRenderNoteNugget(false)
   }
 
   function getNuggetInfo(activeNugget) {
@@ -232,7 +246,7 @@ const EditProject = () => {
                   <ul id="nuggets-cont">
                       {projectData?.nuggets.length > 0 &&
                         projectData.nuggets.map((nugget, index)=>(
-                            <NuggetTab project_id={projectData._id} setRenderInfoNugget={setRenderInfoNugget} nuggets={projectData?.nuggets} setNuggets={setNuggets} activeNugget={activeNugget} setActiveNugget={setActiveNugget} nugget={nugget} index={index} />
+                            <NuggetTab project_id={projectData._id} setRenderNoteNugget={setRenderNoteNugget} setRenderInfoNugget={setRenderInfoNugget} nuggets={projectData?.nuggets} setNuggets={setNuggets} activeNugget={activeNugget} setActiveNugget={setActiveNugget} nugget={nugget} index={index} />
                         ))
                       }
                   </ul>
@@ -240,6 +254,9 @@ const EditProject = () => {
                 </div>
                 {renderInfoNugget &&
                   <ModalInfoNugget setRenderInfoNugget={setRenderInfoNugget}  nugget={getNuggetInfo(activeNugget)} />
+                }
+                {renderNoteNugget &&
+                  <ModalNuggetNote setRenderNoteNugget={setRenderNoteNugget} nugget={getNuggetInfo(activeNugget)} setNuggetNote={setNuggetNote} />
                 }
               </div>
 

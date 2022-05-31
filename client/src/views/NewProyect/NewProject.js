@@ -14,6 +14,7 @@ import NuggetTab from '../../components/NuggetTab/NuggetTab';
 import AddTag from '../../components/AddTag/AddTag';
 import { serverEndpoint } from '../../globals';
 import Menu from '../../components/Menu/Menu';
+import ModalNuggetNote from '../../components/ModalNuggetNote/ModalNuggetNote';
 
 
 const NewProject = () => {
@@ -30,6 +31,11 @@ const NewProject = () => {
   const [activeNugget, setActiveNugget] = useState(0)
   const [renderInfoNugget, setRenderInfoNugget] = useState(false)
   const [progress, setProgress] = useState()
+  const [openNugNote, setOpenNugNote] = useState(false)
+  
+  useEffect(()=>{
+    console.log(openNugNote)
+  },[renderInfoNugget])
 
   const [timings, setTimings] = useState()
   
@@ -242,13 +248,16 @@ const NewProject = () => {
                   <Menu />
                   <ul id="nuggets-cont">
                         {nuggets.map((nugget, index)=>(
-                            <NuggetTab setRenderInfoNugget={setRenderInfoNugget} nuggets={nuggets} setNuggets={setNuggets} activeNugget={activeNugget} setActiveNugget={setActiveNugget} nugget={nugget} index={index} />
+                            <NuggetTab setOpenNugNote={setOpenNugNote} setRenderInfoNugget={setRenderInfoNugget} nuggets={nuggets} setNuggets={setNuggets} activeNugget={activeNugget} setActiveNugget={setActiveNugget} nugget={nugget} index={index} />
                         ))}
                   </ul>
                   <button onClick={ () => { nuevo_nugget() }} id="AddNugget">Agregar nugget</button>
                 </div>
                 {renderInfoNugget &&
                   <ModalInfoTag setRenderInfoNugget={setRenderInfoNugget}  nugget={getNuggetInfo(activeNugget)} />
+                }
+                {openNugNote &&
+                  <ModalNuggetNote />
                 }
               </div>
 

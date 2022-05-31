@@ -7,11 +7,12 @@ import { serverEndpoint, bucket_name } from '../../globals';
 import './NuggetTab.css';
 
 
-const NuggetTab = ({ nuggets, nugget, index, activeNugget, setActiveNugget, setNuggets, setRenderInfoNugget, project_id }) => {
+const NuggetTab = ({ nuggets, nugget, index, activeNugget, setActiveNugget, setNuggets, setRenderInfoNugget, setRenderNoteNugget, project_id }) => {
 
 const [estadoNugget, setEstadoNugget] = useState(nugget.estado)
 const [videoFileNugg, setVideoFileNugg] = useState()
 const [progressUpload, setProgressUpload] = useState()
+
 const [videoNugget, setVideoNugget] = useState({
        estado :  nugget.video_name ? "elegido" : "No elegido",
        nombre : nugget.video_name
@@ -184,6 +185,7 @@ useEffect(()=>{
                             <h4>{index+1} ) </h4>
                             <input defaultValue={nugget.nombre} onChange={ (e) => { updateNuggetName(e) } }  />
                             <div className="look" onClick={  () => {setRenderInfoNugget(true)} } ><img src="/assets/look.png" /> </div>
+                            <div className={nugget.nota || nugget.nota != "" ? "hayNota nota" : "nota"} onClick={  () => {setRenderNoteNugget(true)} } ><img src="/assets/notas.png" /> </div>
                             <div className="copy" onClick={ (e) => { copy_txt(e) } } ><img src="/assets/copy.png" /> <p>Copiado en papelera!</p> </div>
                      </div>
                      <div>

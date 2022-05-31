@@ -44,7 +44,6 @@ const AddTag = ({setProjectData, projectData}) => {
                         {projectData?.tags.map((tag, index)=>(
                                 <li>{tag}<span onClick={ (e)=>{ deleteTag(e) } } class="rmTag">&times;</span></li>
                         ))}
-                        {console.log(tagList)}
                     </ul>  
                 </div>
              </>
