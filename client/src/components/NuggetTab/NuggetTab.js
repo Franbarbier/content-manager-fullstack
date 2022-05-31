@@ -185,7 +185,7 @@ useEffect(()=>{
                             <h4>{index+1} ) </h4>
                             <input defaultValue={nugget.nombre} onChange={ (e) => { updateNuggetName(e) } }  />
                             <div className="look" onClick={  () => {setRenderInfoNugget(true)} } ><img src="/assets/look.png" /> </div>
-                            <div className={nugget.nota || nugget.nota != "" ? "hayNota nota" : "nota"} onClick={  () => {setRenderNoteNugget(true)} } ><img src="/assets/notas.png" /> </div>
+                            <div className={nugget.nota && nugget.nota != "" ? "hayNota nota" : "nota"} onClick={  () => {setRenderNoteNugget(true)} } ><img src="/assets/notas.png" /> </div>
                             <div className="copy" onClick={ (e) => { copy_txt(e) } } ><img src="/assets/copy.png" /> <p>Copiado en papelera!</p> </div>
                      </div>
                      <div>

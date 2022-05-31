@@ -27,6 +27,7 @@ useEffect(()=>{
 
     for (let index = 0; index < project.nuggets.length; index++) {
         const nugg = project.nuggets[index];
+        console.log( project.nuggets)
 
         // Get % asginado
         for (let index = 0; index < nugg.timings.length; index++) {
@@ -45,6 +46,7 @@ useEffect(()=>{
 
         }
     }
+
 
     // Set % asginado
     var porcentajeAsig = totalDuration * 100 / project.duration

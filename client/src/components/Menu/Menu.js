@@ -7,16 +7,20 @@ import {AnimatePresence, motion, useCycle } from 'framer-motion'
 import React, { useState, useEffect } from 'react';
 import "./Menu.css"
 
-const Menu = ({id, projectData}) => {
+const Menu = ({id, projectData, last5minSave}) => {
 
     const [deleteBtn, setDeleteBtn] = useCycle(false, true)
     const dispatch = useDispatch()
     
     function confirmar(){
-        if (window.confirm("Do you really want to leave?")) {
-            window.open("exit.html", "Thanks for Visiting!");
-          }
+            
+            if (window.confirm("Do you really want to leave?")) {
+                window.open("exit.html", "Thanks for Visiting!");
+            }
+
+        
     }
+
     function deleteProjectBtn(){
         if (window.confirm("Eliminar este proyecto de forma permanente?")) {
             // setLoading(true)
@@ -87,7 +91,7 @@ const Menu = ({id, projectData}) => {
                         </div>
                     }
 
-                    <Link onClick={ (e) => { if (!window.confirm("No se guardarán automaticamente los cambios realizados.")) { e.preventDefault() } } } to={"/"}>
+                    <Link onClick={ (e) => { if (!last5minSave) { if(!window.confirm("No se guardarán automaticamente los cambios realizados.")){ e.preventDefault() } }  } } to={"/"}>
                         <div id="volver" title="Volver al inicio" >
                             <img src="/assets/casa-violeta.png" />
                         </div>

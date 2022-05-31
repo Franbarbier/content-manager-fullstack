@@ -30,13 +30,10 @@ const NewProject = () => {
   const [nuggetCounter, setNuggetCounter] = useState(1)
   const [activeNugget, setActiveNugget] = useState(0)
   const [renderInfoNugget, setRenderInfoNugget] = useState(false)
+  const [renderNoteNugget, setRenderNoteNugget] = useState(false)
   const [progress, setProgress] = useState()
-  const [openNugNote, setOpenNugNote] = useState(false)
-  
-  useEffect(()=>{
-    console.log(openNugNote)
-  },[renderInfoNugget])
 
+  
   const [timings, setTimings] = useState()
   
   const dispatch = useDispatch()
@@ -86,6 +83,19 @@ const NewProject = () => {
         nuevo_nugget()
     }
   }
+
+
+  function setNuggetNote(nota){
+    var oldState = nuggets
+    let activeNugg = nuggets.filter(nugget => nugget.id == activeNugget);
+    let activeOne = oldState.indexOf(activeNugg[0])
+
+    oldState[activeOne].nota = nota 
+  
+    setNuggets(oldState)
+    setRenderNoteNugget(false)
+  }
+
 
   function setLoadingProccess(prog){
     if (prog.toFixed(0) < 85 ) {
@@ -248,7 +258,7 @@ const NewProject = () => {
                   <Menu />
                   <ul id="nuggets-cont">
                         {nuggets.map((nugget, index)=>(
-                            <NuggetTab setOpenNugNote={setOpenNugNote} setRenderInfoNugget={setRenderInfoNugget} nuggets={nuggets} setNuggets={setNuggets} activeNugget={activeNugget} setActiveNugget={setActiveNugget} nugget={nugget} index={index} />
+                            <NuggetTab setRenderNoteNugget={setRenderNoteNugget} setRenderInfoNugget={setRenderInfoNugget} nuggets={nuggets} setNuggets={setNuggets} activeNugget={activeNugget} setActiveNugget={setActiveNugget} nugget={nugget} index={index} />
                         ))}
                   </ul>
                   <button onClick={ () => { nuevo_nugget() }} id="AddNugget">Agregar nugget</button>
@@ -256,8 +266,8 @@ const NewProject = () => {
                 {renderInfoNugget &&
                   <ModalInfoTag setRenderInfoNugget={setRenderInfoNugget}  nugget={getNuggetInfo(activeNugget)} />
                 }
-                {openNugNote &&
-                  <ModalNuggetNote />
+                {renderNoteNugget &&
+                  <ModalNuggetNote setRenderNoteNugget={setRenderNoteNugget} nugget={getNuggetInfo(activeNugget)} setNuggetNote={setNuggetNote} />
                 }
               </div>
 

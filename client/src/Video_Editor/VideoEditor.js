@@ -151,7 +151,7 @@ class VideoEditor extends React.Component {
                     videoUrl={this.state.videoUrl} 
                     
                     projectData={this.props.projectData} 
-                    getGetTotalDuration={this.getGetTotalDuration} 
+                    // getGetTotalDuration={this.getGetTotalDuration} 
                     activeNugget={this.props.activeNugget} 
                     checkThumb={this.props.getThumbURL} 
                     recordTimings={this.adaptadorTiming} 

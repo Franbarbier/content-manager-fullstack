@@ -105,9 +105,7 @@ class Editor extends React.Component {
         }
         
         
-        setTimeout(() => {
-            this.props.getGetTotalDuration(this.state.totalDuration)
-        }, 1000);
+        
         this.props.recordTimings(this.state.timings)
     }
 
@@ -408,7 +406,7 @@ class Editor extends React.Component {
         const formateo = this.state.timings[index][point]
 
         var minutes = Math.floor(formateo / 60);
-        var seconds = formateo - minutes * 60;
+        var seconds = Math.floor(formateo - minutes * 60);
 
         console.log(minutes, seconds)
         

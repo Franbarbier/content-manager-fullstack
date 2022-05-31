@@ -34,6 +34,7 @@ const EditProject = () => {
   const [progress, setProgress] = useState()
   const [primeraVez, setPrimeraVez] = useState(true)
   const [timings, setTimings] = useState()
+  const [last5minSave, setLast5minSave] = useState(false)
 
 
   const { id } = useParams();
@@ -125,6 +126,10 @@ const EditProject = () => {
     }
     if (estado == "success") {
       alert('Todo joya rrope')
+      setLast5minSave(true)
+      setTimeout(() => {
+        setLast5minSave(false)
+      }, 5000);
     }
     if (estado == "error") {
       alert('Hubo un error al guardar el proyecto')
@@ -205,6 +210,10 @@ const EditProject = () => {
       (e)=> 
         saved_project(id),
         alert('Se guardó correctamente el proyecto'),
+        setLast5minSave(true),
+        setTimeout(() => {
+          setLast5minSave(false)
+        }, 300000),
         setLoading(false)
         // async ()=>{
         //   const onSuccess = () => {alert('Se guardó correctamente el proyecto')}
@@ -219,7 +228,8 @@ const EditProject = () => {
   }
 
   function getTotalDuration(duration){
-    setProjectData( { ...projectData, duration: duration  } )
+    console.log(duration)
+    // setProjectData( { ...projectData, duration: duration  } )
   }
 
   useEffect(()=>{
@@ -241,7 +251,7 @@ const EditProject = () => {
                 </div>
                 
                 <div id="col-nuggets">
-                  <Menu id={id} projectData={projectData}/>
+                  <Menu id={id} projectData={projectData} last5minSave={last5minSave}/>
 
                   <ul id="nuggets-cont">
                       {projectData?.nuggets.length > 0 &&
