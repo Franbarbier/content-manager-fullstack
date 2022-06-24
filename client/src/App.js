@@ -40,7 +40,7 @@ const App = () => {
         <Router>
           <AppProvider>
           <ScrollToTop/>
-            <Switch>
+            {/* <Switch> */}
                 <Route exact path="/">
                     <Dash setActiveTab={setActiveTab} />
                 </Route>
@@ -50,7 +50,7 @@ const App = () => {
                 <Route path="/project/:id">
                     <EditProject setActiveTab={setActiveTab} />
                 </Route>
-            </Switch>
+            {/* </Switch> */}
             </AppProvider>
         </Router>
         }

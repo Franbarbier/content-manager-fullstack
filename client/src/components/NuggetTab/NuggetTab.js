@@ -182,7 +182,7 @@ useEffect(()=>{
   function render(){
       return <li className={nugget.id == activeNugget && 'nuggetSelected'} onClick={ (e) => { checkDeleted(e, nugget.id) } } >
                      <div id="nugget-titulo">
-                            <h4>{index+1} ) </h4>
+                            <h4>{index+1})</h4>
                             <input defaultValue={nugget.nombre} onChange={ (e) => { updateNuggetName(e) } }  />
                             <div className="look" onClick={  () => {setRenderInfoNugget(true)} } ><img src="/assets/look.png" /> </div>
                             <div className={nugget.nota && nugget.nota != "" ? "hayNota nota" : "nota"} onClick={  () => {setRenderNoteNugget(true)} } ><img src="/assets/notas.png" /> </div>
