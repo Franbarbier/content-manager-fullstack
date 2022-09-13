@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import ScrollToTop from './ScrollToTop';
 
 
@@ -8,7 +8,8 @@ import { AppProvider } from './contexts/AppContext';
  import './css-gral.css';
 
 import Editor from './Video_Editor/VideoEditor'
-import NewProject from "./views/NewProyect/NewProject";
+// import NewProject from "./views/NewProyect/NewProject";
+import NewProject2 from "./views/NewProyect/NewProject2";
 import Dash from './views/dash/dash';
 import EditProject from './views/EditProject/EditProject';
 import Login from './views/Login/Login';
@@ -22,7 +23,7 @@ const App = () => {
   const [user, setUser] = useState({})
 
   useEffect(()=>{
-    verifyUser().then((res)=>setUser(res))
+    // verifyUser().then((res)=>setUser(res))
   }, [])
 
   useEffect(()=>{
@@ -34,26 +35,22 @@ const App = () => {
     return (
       <>
 
-      { !user.mail ?
+      {/* { !user.mail ?
         <Login setUser={setUser} />
-      :
+      : */}
         <Router>
           <AppProvider>
           <ScrollToTop/>
-            {/* <Switch> */}
-                <Route exact path="/">
-                    <Dash setActiveTab={setActiveTab} />
-                </Route>
-                <Route exact path="/new-project">
-                    <NewProject setActiveTab={setActiveTab} />
-                </Route>
-                <Route path="/project/:id">
-                    <EditProject setActiveTab={setActiveTab} />
-                </Route>
-            {/* </Switch> */}
+            <Routes>
+                
+                <Route exact path="/" element={<Dash setActiveTab={setActiveTab} />}/>
+                <Route exact path="/new-project" element={<NewProject2 setActiveTab={setActiveTab} />}/>
+                <Route exact path="/project/:id" element={<EditProject setActiveTab={setActiveTab} />}/>
+
+            </Routes>
             </AppProvider>
         </Router>
-        }
+        {/*  } */}
       </>
     );
   }

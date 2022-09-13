@@ -9,9 +9,10 @@ import './NuggetTab.css';
 
 const NuggetTab = ({ nuggets, nugget, index, activeNugget, setActiveNugget, setNuggets, setRenderInfoNugget, setRenderNoteNugget, project_id }) => {
 
-const [estadoNugget, setEstadoNugget] = useState(nugget.estado)
 const [videoFileNugg, setVideoFileNugg] = useState()
 const [progressUpload, setProgressUpload] = useState()
+const [estadoNugget, setEstadoNugget] = useState(nugget.estado)
+
 
 const [videoNugget, setVideoNugget] = useState({
        estado :  nugget.video_name ? "elegido" : "No elegido",
@@ -21,7 +22,8 @@ const [videoNugget, setVideoNugget] = useState({
 
 function checkDeleted(e, id) {
        if(!e.target.classList.contains('delete-nugget')){ 
-              setActiveNugget(id)
+              // setActiveNugget(id)
+              setActiveNugget(nuggets.filter(nugget => nugget.id == id)[0])
        }
 }
 
@@ -77,9 +79,11 @@ function deleteNugget(){
 
        if (nuggets.filter(nugg => nugg.id != nugget.id ).length > 0 ) {
               if(nuggets[index-1]){
-                      setActiveNugget(nuggets[index-1].id)
+                     //  setActiveNugget(nuggets[index-1].id)
+                      setActiveNugget(nuggets.filter(nugget => nugget.id == nuggets[index-1].id)[0])
               }else{
-                      setActiveNugget(nuggets[index+1].id)
+                     //  setActiveNugget(nuggets[index+1].id)
+                      setActiveNugget(nuggets.filter(nugget => nugget.id == nuggets[index+1].id)[0])
               }
               setNuggets(nuggets.filter(nugg => nugg.id != nugget.id ) )
        }else{
@@ -87,7 +91,7 @@ function deleteNugget(){
        }
 }
 function updateNuggetName(e){
-       var newNuggets = nuggets
+       var newNuggets = [...nuggets]
        newNuggets[newNuggets.indexOf(nugget)].nombre = e.target.value
        setNuggets(newNuggets)
 }
@@ -119,7 +123,7 @@ function deleteNuggetVideo(e, directory) {
        let targett = e.target
        if ( window.confirm("Desea eliminar el video de este nugget?") ) {
        
-              let deleted_object = directory+'nugget' + nugget.id + "-"+project_id +'-'+ videoFileNugg?.name
+              let deleted_object = directory+'nugget' + nugget.id + "-"+project_id +'-'+ videoFileNugg.name
 
               axios.post(serverEndpoint+'delete-video', {deleted_object}, { 
                     
@@ -149,41 +153,13 @@ function deleteNuggetVideo(e, directory) {
        } 
 }
 
-useEffect(()=>{
-       
-       // Ya no se suben videos nugget onChange, sino que cuando se guarda manualmente el proyecto
-       // let file = videoFileNugg
-       // const data = new FormData()
-       // var new_name = 'nugget' + nugget.id + "-"+project_id +'-'+ videoFileNugg?.name
-       // data.append('new_name',new_name)
-       // data.append( 'file', file )
-       
-
-       //  axios.post(serverEndpoint+'upload-video', data, { 
-                    
-       //      onUploadProgress: (progressEvent) => {
-       //          const progressNugg = ( (progressEvent.loaded / progressEvent.total) * 100 ).toFixed();
-       //          setProgressUpload(progressNugg+1);
-       //          console.log(progressUpload)
-       //      }
-
-       //  } )
-       //  .then((e)=>{
-       //    console.log('el nugget video subido', e)
-       //    setProgressUpload(101)
-       //  })
-       //  .catch( (e) =>{
-       //      console.log('error:::', e.error)
-       //  } )
-}, [videoFileNugg] )
-
 
 
   function render(){
-      return <li className={nugget.id == activeNugget && 'nuggetSelected'} onClick={ (e) => { checkDeleted(e, nugget.id) } } >
+      return <li className={nugget.id == activeNugget.id && 'nuggetSelected'} onClick={ (e) => { checkDeleted(e, nugget.id) } } key={'Li-nugget-'+index} >
                      <div id="nugget-titulo">
                             <h4>{index+1})</h4>
-                            <input defaultValue={nugget.nombre} onChange={ (e) => { updateNuggetName(e) } }  />
+                            <input value={nugget.nombre} onChange={ (e) => { updateNuggetName(e) } }  key={'nombre-nugg-'+index}/>
                             <div className="look" onClick={  () => {setRenderInfoNugget(true)} } ><img src="/assets/look.png" /> </div>
                             <div className={nugget.nota && nugget.nota != "" ? "hayNota nota" : "nota"} onClick={  () => {setRenderNoteNugget(true)} } ><img src="/assets/notas.png" /> </div>
                             <div className="copy" onClick={ (e) => { copy_txt(e) } } ><img src="/assets/copy.png" /> <p>Copiado en papelera!</p> </div>
@@ -205,7 +181,7 @@ useEffect(()=>{
                                           { videoNugget.estado == "elegido" &&
                                                  <div className='video-options'>
                                                         <div><a target="_blank" href={'https://storage.googleapis.com/'+bucket_name+'/videos/nugget' + nugget.id + "-"+project_id +'-'+ videoNugget.nombre.replaceAll( "+", "%2B" ).replace(/\s+/g,'%20')}><img src="/assets/look.png" title="Ver y descargar"/></a></div>
-                                                        <div><img src="/assets/pencil.png" onClick={ document.getElementById(`addVid${nugget.id}`)?.click } title="Editar"/></div>
+                                                        <div><img src="/assets/pencil.png" onClick={ document.getElementById(`addVid${nugget.id}`).click } title="Editar"/></div>
                                                         <div><img src="/assets/delete.png" onClick={ (e)=>{deleteNuggetVideo(e, 'videos/')} } title="Eliminar"/></div>
                                                  </div>
                                           }

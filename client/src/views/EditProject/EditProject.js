@@ -28,30 +28,49 @@ const EditProject = () => {
   const [nuggets, setNuggets] = useState([])
   const [tags, setTags] = useState([])
   const [nuggetCounter, setNuggetCounter] = useState(1)
-  const [activeNugget, setActiveNugget] = useState(1)
+  const [activeNugget, setActiveNugget] = useState({})
   const [renderInfoNugget, setRenderInfoNugget] = useState(false)
   const [renderNoteNugget, setRenderNoteNugget] = useState(false)
   const [progress, setProgress] = useState()
   const [primeraVez, setPrimeraVez] = useState(true)
   const [timings, setTimings] = useState()
   const [last5minSave, setLast5minSave] = useState(false)
+  const [linkYT, setLinkYT] = useState(false)
+  
+  const [txt, setTxt] = useState('')
+  const [cortesFormateados, setCortesFormateados] = useState([])
 
 
   const { id } = useParams();
 
-  const projects = useSelector(state => state?.projects)
+  const projects = useSelector(state => state.projects)
   const project = projects.filter((proyecto)=>proyecto._id === id)[0]
 
   const [projectData, setProjectData] = useState()
 
   useEffect(()=> {
     setProjectData(project)
+    if (project) {
+      if (project.nuggets) {
+      console.log(project.nuggets)
+      setActiveNugget( project.nuggets[0] )
+      }
+    }
   }, [project])
+
+
   useEffect(()=> {
     console.log(projectData)
   }, [projectData])
   
-  
+  useEffect(()=> {
+    setCortesFormateados(activeNugget.timings)
+  }, [activeNugget])
+
+
+
+  console.log(nuggets)
+
   const dispatch = useDispatch()
 
   function nuevo_nugget() {
@@ -65,8 +84,11 @@ const EditProject = () => {
     setNuggets(nuggets => [...projectData.nuggets, newNugget])
 
     setNuggetCounter(newNugget.id)
-    setActiveNugget(nuggetCounter)
+    console.log(nuggets.filter(nugget => nugget.id == (nuggetCounter)[0] +1) )
+    // setActiveNugget(nuggets[nuggetCounter])
   }
+
+  
 
   function recordTimings(timing) {
     var oldState = nuggets
@@ -169,7 +191,7 @@ const EditProject = () => {
       if (element.video) {
           let file = element.video
           const data = new FormData()
-          var new_name = 'nugget' + element.id + "-"+project_id +'-'+ file?.name
+          var new_name = 'nugget' + element.id + "-"+project_id +'-'+ file.name
           data.append('new_name',new_name)
           data.append( 'file', file )
           
@@ -237,28 +259,119 @@ const EditProject = () => {
   }, [nuggets])
 
 
+  function getIdYt(link){
+    try {
+      
+      var video_id = link.split('v=')[1];
+      var ampersandPosition = video_id.indexOf('&'); 
+
+      if(ampersandPosition != -1) {
+        video_id = video_id.substring(0, ampersandPosition);
+      }
+      setProjectData({...projectData, video_url : link})
+      setLinkYT(video_id)
+    } catch (error) {
+      setLinkYT('')
+    }
+  }
+
+
+  useEffect(()=>{
+    // console.log( projectData.video_url )      
+      try {
+      
+      var video_id = projectData.video_url.split('v=')[1];
+      var ampersandPosition = video_id.indexOf('&'); 
+
+      if(ampersandPosition != -1) {
+        video_id = video_id.substring(0, ampersandPosition);
+      }
+      console.log(video_id)
+      setLinkYT(video_id)
+    } catch (error) {
+      console.log('no se pudos')
+      setLinkYT('')
+    }
+  }, [projectData])
+
+  function handleTXT(e){
+    const reader = new FileReader(); // filereader
+    reader.readAsText(e.target.files[0]); // read as text
+    reader.onload = () => {
+      const text = reader.result;
+      // const result = text.split(/\r?\n/); // split on every new line
+      const result = text // split on every new line
+      setTxt(result); // do something with array
+    };
+  };
+  
+
+
   function render(){
       return  <div id="EditProject-view">
                 <div id="col-vid">
                   <div id="project-info">
-                    <input className='nombre-proyecto' defaultValue={projectData?.name} onChange={ (e) => { cambiarNombreProject(e) } } />
+                    <input className='nombre-proyecto' value={ projectData && projectData.name } onChange={ (e) => { cambiarNombreProject(e) } } />
                     <button id="save-project" onClick={save_project}> {loading ? "GUARDANDO" : projectData ? "GUARDAR CAMBIOS" : "CREAR PROYECTO"}</button>
                   </div>
-                    {Array.isArray(projectData?.tags) &&
+                    {Array.isArray(projectData && projectData.tags) &&
                       <AddTag setProjectData={setProjectData} projectData={projectData} prevTags={tags} />
                     }
-                    <VideoEditor projectData={projectData} video_url={projectData?._id+'-'+projectData?.video_url} getTotalDuration={getTotalDuration} saved={saved} newId={newId} saveLoader={saveLoader} setVideoURL={setVideoURL} getThumbURL={getThumbURL} activeNugget={ nuggets.filter(nugget => nugget.id == activeNugget) } recordTimings={recordTimings} setCorteInfo={setCorteInfo} parentCallback={handleCallback} />                    
+                    {/* <VideoEditor projectData={projectData} video_url={projectData._id+'-'+projectData.video_url} getTotalDuration={getTotalDuration} saved={saved} newId={newId} saveLoader={saveLoader} setVideoURL={setVideoURL} getThumbURL={getThumbURL} activeNugget={ nuggets.filter(nugget => nugget.id == activeNugget) } recordTimings={recordTimings} setCorteInfo={setCorteInfo} parentCallback={handleCallback} />                     */}
+                    <input id="link_yt" type="text" placeholder='Link de Youtube' onChange={ (e)=>{ getIdYt(e.target.value) } } value={ projectData && projectData.video_url } />
+                    <br />
+                
+                    <iframe width="100%" height="400px" src={"https://www.youtube.com/embed/"+linkYT} frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    <br />
+                    <br />
+                    {activeNugget &&
+                      <div id="note-cont">
+                        <label>Subir cortes del nugget:</label>
+                        <input type="file" onChange={(e)=>{ handleTXT(e) }} />
+                      </div>
+                    }
+                    
+                    {cortesFormateados &&
+                       <ul id="cortes-cont">
+                        {cortesFormateados.map((corte, index)=>(
+                            <li>
+                            <div>
+                              <h6>Corte {corte.corte}</h6>
+                              <br />
+                              <span>Desde: <strong>{corte.desde}</strong></span>
+                              <br />
+                              <span>Hasta: <strong>{corte.hasta}</strong></span>
+                              <br />
+                              
+                              <div>
+                              {corte.comentarios.map((comentario, index)=>(
+                                <i>"{comentario}" </i>
+                                ))}  
+                              </div>
+                            </div>
+                          </li>
+                          ))
+                        }
+                     </ul>
+                    }
                 </div>
                 
                 <div id="col-nuggets">
                   <Menu id={id} projectData={projectData} last5minSave={last5minSave}/>
 
                   <ul id="nuggets-cont">
-                      {projectData?.nuggets.length > 0 &&
-                        projectData.nuggets.map((nugget, index)=>(
-                            <NuggetTab project_id={projectData._id} setRenderNoteNugget={setRenderNoteNugget} setRenderInfoNugget={setRenderInfoNugget} nuggets={projectData?.nuggets} setNuggets={setNuggets} activeNugget={activeNugget} setActiveNugget={setActiveNugget} nugget={nugget} index={index} />
-                        ))
+                    {projectData &&
+                    <>
+                      {projectData.nuggets.length > 0 &&
+                      <>
+                        {projectData.nuggets.map((nugget, index)=>(
+                          <NuggetTab project_id={projectData._id} setRenderNoteNugget={setRenderNoteNugget} setRenderInfoNugget={setRenderInfoNugget} nuggets={projectData.nuggets} setNuggets={setNuggets} activeNugget={activeNugget} setActiveNugget={setActiveNugget} nugget={nugget} index={index} />
+                         
+                        ))}
+                      </>
                       }
+                    </>
+                    }
                   </ul>
                   <button onClick={ () => { nuevo_nugget() }} id="AddNugget">Agregar nugget</button>
                 </div>

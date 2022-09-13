@@ -81,3 +81,43 @@
 		background-position: 0% 50%;
 	}
 }
+
+
+#cortes-cont li{
+    padding: 10% 0;
+    border-bottom: 1px solid #ddd;
+}
+#cortes-cont li:first-child{
+    padding-top: 0%;
+}
+
+#cortes-cont li>div>span{
+    margin-bottom: 3px;
+    display: block;
+}
+#note-cont {
+    margin-top: 3%;
+}
+#note-cont label{
+    margin-bottom: 2%;
+    display: block;
+    font-size: 0.9em;
+}
+#note-cont input{
+    border: 1px solid var(--violeta);
+    padding: 15px 15px;
+    background: #dec7fa;
+    border-radius: 5px;
+    width: calc(100% - 30px);
+    margin-bottom: 10%;
+    cursor: pointer;
+}
+
+#link_yt{
+    width: calc(99% - 40px);
+    padding: 11px 20px;
+    border-radius: 5px;
+    border: 1px solid #828282;
+    color: #232323;
+    margin-bottom: 4%;
+}

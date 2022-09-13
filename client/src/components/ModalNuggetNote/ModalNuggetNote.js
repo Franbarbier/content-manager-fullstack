@@ -17,7 +17,7 @@ console.log(nugget)
                                    <img id="close-modal-nuggetnote" onClick={  () => {setRenderNoteNugget(false)} } src="/assets/cancel.svg" />
                                    <div>
                                           <h6>Escriba una nota para el nugget</h6>
-                                          <textarea id="textarea-note">{nugget?.nota}</textarea>
+                                          <textarea id="textarea-note">{nugget.nota}</textarea>
                                           <div>
                                                  <button id="save-note" onClick={()=>{ setNuggetNote( document.getElementById('textarea-note').value ) }}>GUARDAR</button>
                                           </div>

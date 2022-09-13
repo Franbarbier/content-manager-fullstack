@@ -9,15 +9,15 @@ const AddTag = ({setProjectData, projectData}) => {
 
 
     const [ tagValue, setTagValue] = useState()
-    const [ tagList, setTagList] = useState(projectData?.tags)
+    const [ tagList, setTagList] = useState(projectData.tags)
     
     
     useEffect( ()=>{
         setProjectData( { ...projectData, tags: tagList  } )
     }, [tagList] )
-    
+
     useEffect( ()=>{
-        setTagList( projectData?.tags )
+        setTagList( projectData.tags )
         
     }, [] )
 
@@ -41,7 +41,7 @@ const AddTag = ({setProjectData, projectData}) => {
                     <input type="text" onChange={ (e)=>{ setTagValue(e.target.value) } } onKeyDown={ (e) => { checkIfEnter(e) } } id="newTag" />
                     <ul id="tagList">
                         {/* <!-- All TagList Here! --> */}
-                        {projectData?.tags.map((tag, index)=>(
+                        {projectData.tags.map((tag, index)=>(
                                 <li>{tag}<span onClick={ (e)=>{ deleteTag(e) } } class="rmTag">&times;</span></li>
                         ))}
                     </ul>  
